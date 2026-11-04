@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Navidad 2026 · Gestión Integral Fiesta de Empresa (18 Dic)</title>
+  <meta name="description" content="Aplicación PWA multiplataforma para organización, logística, catering, cocina, tareas, cronograma y presupuesto de la Fiesta de Navidad (18 de diciembre de 2026)." />
+
+  <!-- PWA & Mobile Meta Tags (iOS / iPadOS / Android / Windows) -->
+  <meta name="theme-color" content="#991b1b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Navidad 2026" />
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="img/icon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+
+  <!-- Tipografía Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <div class="app-shell">
+    <!-- SIDEBAR ESCRITORIO -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="img/icon.svg" alt="Navidad 2026" />
+        <div>
+          <div class="sidebar-brand-title">NAVIDAD 2026</div>
+          <div class="sidebar-brand-sub">18 Diciembre · Instalaciones</div>
+        </div>
+      </div>
+
+      <!-- Perfil del Organizador Activo -->
+      <div class="sidebar-user-card">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+          <div id="sidebar-user-avatar" class="user-avatar" style="background:#2563eb;">TT</div>
+          <div style="min-width:0;">
+            <div style="font-size:11px;color:#94a3b8;">Conectado como:</div>
+            <div id="sidebar-user-name" style="font-weight:800;font-size:13.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">TeTe (Gestión)</div>
+          </div>
+        </div>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,0.14);color:#fff;padding:4px 8px;" onclick="App.openAuthModal()" title="Cambiar usuario o configurar PIN">
+          ⚙️
+        </button>
+      </div>
+
+      <!-- Navegación Principal -->
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-view="dashboard" onclick="App.setView('dashboard')">
+          <span>📊</span>
+          <span>Cuadro de Mando</span>
+        </button>
+        <button class="nav-btn" data-view="needs" onclick="App.setView('needs')">
+          <span>📦</span>
+          <span>Necesidades y Logística</span>
+          <span class="nav-badge" id="badge-needs">0</span>
+        </button>
+        <button class="nav-btn" data-view="tasks" onclick="App.setView('tasks')">
+          <span>✅</span>
+          <span>Tareas del Equipo</span>
+          <span class="nav-badge" id="badge-tasks">0</span>
+        </button>
+        <button class="nav-btn" data-view="schedule" onclick="App.setView('schedule')">
+          <span>⏱️</span>
+          <span>Cronograma y Escaleta</span>
+          <span class="nav-badge" id="badge-schedule">0</span>
+        </button>
+        <button class="nav-btn" data-view="budget" onclick="App.setView('budget')">
+          <span>💶</span>
+          <span>Presupuesto y Costes</span>
+        </button>
+      </nav>
+
+      <!-- Acciones Rápidas de Pie de Sidebar -->
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="App.printCurrentView()">
+          🖨️ Imprimir Vista Filtrada (A4)
+        </button>
+        <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="App.exportCurrentCSV()">
+          📥 Exportar Vista a Excel (CSV)
+        </button>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-sm" style="flex:1;background:rgba(255,255,255,0.1);color:#e2e8f0;" onclick="App.exportFullJSON()" title="Descargar copia de seguridad JSON">
+            💾 Backup JSON
+          </button>
+          <button class="btn btn-sm" style="flex:1;background:rgba(255,255,255,0.1);color:#e2e8f0;" onclick="document.getElementById('import-json-input').click()" title="Restaurar JSON">
+            📂 Importar
+          </button>
+          <input type="file" id="import-json-input" accept=".json" style="display:none" onchange="App.importFullJSON(event)" />
+        </div>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="main-area">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="view-title" id="current-view-title">Cuadro de Mando General</h1>
+          <span class="countdown-pill" id="countdown-badge">🎄 18 Dic 2026</span>
+        </div>
+
+        <div class="topbar-actions">
+          <!-- Estado de Sincronización GitHub -->
+          <div id="sync-status-btn" class="sync-indicator synced" onclick="App.syncNow(true)" title="Haz clic para sincronizar con GitHub ahora">
+            <span class="sync-dot"></span>
+            <span id="sync-status-text">Sincronizado</span>
+          </div>
+
+          <button class="btn btn-secondary btn-sm" onclick="App.openAuthModal()" title="Cambiar organizador activo o PIN de sincronización">
+            👤 <span id="topbar-user-label">TeTe</span>
+          </button>
+
+          <button class="btn btn-secondary btn-sm" onclick="App.printCurrentView()" title="Imprimir exactamente la vista y filtros actuales en formato A4 limpio">
+            🖨️ Imprimir Vista
+          </button>
+
+          <button class="btn btn-secondary btn-sm" onclick="App.exportCurrentCSV()" title="Exportar tabla filtrada a CSV compatible con Excel">
+            📊 Excel/CSV
+          </button>
+
+          <button class="btn btn-primary btn-sm" id="primary-add-btn" onclick="App.handlePrimaryAdd()">
+            ➕ Nuevo Registro
+          </button>
+        </div>
+      </header>
+
+      <!-- BARRA TRANSVERSAL DE FILTROS (4 SECTORES + 4 USUARIOS + ESTADO + BÚSQUEDA) -->
+      <section class="global-filter-bar">
+        <div class="filter-row">
+          <div class="sector-pills">
+            <span class="filter-label">Sector:</span>
+            <button class="pill-btn active" data-sector="ALL" onclick="App.setFilter('sector', 'ALL')">Todos</button>
+            <button class="pill-btn" data-sector="Cocina" onclick="App.setFilter('sector', 'Cocina')">🍳 Cocina</button>
+            <button class="pill-btn" data-sector="Catering" onclick="App.setFilter('sector', 'Catering')">🥂 Catering</button>
+            <button class="pill-btn" data-sector="Administración" onclick="App.setFilter('sector', 'Administración')">📋 Administración</button>
+            <button class="pill-btn" data-sector="Organización" onclick="App.setFilter('sector', 'Organización')">🎄 Organización</button>
+          </div>
+
+          <div class="user-pills">
+            <span class="filter-label">Responsable:</span>
+            <button class="pill-btn active" data-user="ALL" onclick="App.setFilter('user', 'ALL')">Equipo (4)</button>
+            <button class="pill-btn" data-user="MINE" onclick="App.setFilter('user', 'MINE')">⭐ Mis Asignaciones</button>
+            <button class="pill-btn" data-user="tete" onclick="App.setFilter('user', 'tete')">TeTe</button>
+            <button class="pill-btn" data-user="bea" onclick="App.setFilter('user', 'bea')">Bea</button>
+            <button class="pill-btn" data-user="leli" onclick="App.setFilter('user', 'leli')">Leli</button>
+            <button class="pill-btn" data-user="jose" onclick="App.setFilter('user', 'jose')">Jose</button>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <div id="contextual-subfilters" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <!-- Filtros contextuales según la vista activa (Categoría, Origen, Fase cronograma, etc.) -->
+          </div>
+
+          <div class="filter-controls">
+            <select id="filter-status-select" class="select-filter" onchange="App.setFilter('status', this.value)">
+              <option value="ALL">Estado: Todos</option>
+              <option value="OPEN">⏳ Solo Pendientes / En Curso</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Solicitado">Solicitado</option>
+              <option value="En Curso">En Curso</option>
+              <option value="Confirmado">Confirmado</option>
+              <option value="En instalaciones">En instalaciones</option>
+              <option value="Completado">Completado / Completada</option>
+            </select>
+
+            <input
+              type="search"
+              id="global-search-input"
+              class="search-input"
+              placeholder="🔍 Buscar concepto, proveedor, nota..."
+              oninput="App.setFilter('search', this.value)"
+            />
+
+            <button class="btn btn-secondary btn-sm" onclick="App.resetFilters()" title="Limpiar todos los filtros">
+              Limpiar
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTENEDOR DINÁMICO DE MÓDULOS -->
+      <main class="content-container" id="main-view-container">
+        <!-- Se inyecta dinámicamente desde js/app.js -->
+      </main>
+    </div>
+
+    <!-- BARRA INFERIOR MÓVIL (iPhone / Android) -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav-btn active" data-view="dashboard" onclick="App.setView('dashboard')">
+        <span class="bottom-nav-icon">📊</span>
+        <span>Resumen</span>
+      </button>
+      <button class="bottom-nav-btn" data-view="needs" onclick="App.setView('needs')">
+        <span class="bottom-nav-icon">📦</span>
+        <span>Logística</span>
+      </button>
+      <button class="bottom-nav-btn" data-view="tasks" onclick="App.setView('tasks')">
+        <span class="bottom-nav-icon">✅</span>
+        <span>Tareas</span>
+      </button>
+      <button class="bottom-nav-btn" data-view="schedule" onclick="App.setView('schedule')">
+        <span class="bottom-nav-icon">⏱️</span>
+        <span>Horarios</span>
+      </button>
+      <button class="bottom-nav-btn" data-view="budget" onclick="App.setView('budget')">
+        <span class="bottom-nav-icon">💶</span>
+        <span>Costes</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- MODAL UNIVERSAL CRUD (Necesidades, Tareas, Cronograma, Presupuesto Extra) -->
+  <div class="modal-backdrop" id="crud-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="crud-modal-title">Nuevo Registro</h3>
+        <button class="btn btn-secondary btn-sm" onclick="App.closeCrudModal()">✕</button>
+      </div>
+      <form id="crud-form" onsubmit="App.saveCrudForm(event)">
+        <div class="modal-body" id="crud-modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="crud-delete-btn" style="margin-right:auto;display:none;" onclick="App.deleteCrudRecord()">
+            🗑️ Eliminar
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeCrudModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">💾 Guardar y Sincronizar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE IDENTIFICACIÓN DE USUARIO Y CLAVE PIN (509066) -->
+  <div class="modal-backdrop" id="auth-modal">
+    <div class="modal-box" style="max-width:480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🔐 Perfil de Organizador y Sincronización</h3>
+        <button class="btn btn-secondary btn-sm" onclick="App.closeAuthModal()">✕</button>
+      </div>
+      <form onsubmit="App.saveAuthModal(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>1. ¿Quién eres? (Selecciona tu perfil en este dispositivo)</label>
+            <div id="auth-user-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px;">
+              <!-- Botones de selección TeTe, Bea, Leli, Jose -->
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:8px;">
+            <label for="auth-pin-input">2. PIN / Clave de Acceso del Equipo (Sincronización Nube GitHub)</label>
+            <input
+              type="password"
+              id="auth-pin-input"
+              class="form-control"
+              placeholder="Introduce el PIN de 6 dígitos (ej. 509066)"
+              autocomplete="current-password"
+            />
+            <span style="font-size:11.5px;color:var(--text-light);">
+              El PIN desencripta localmente la credencial de GitHub (`VisualXet/Navidad2026`) y queda recordado en este iPhone, iPad o PC.
+            </span>
+          </div>
+
+          <div id="auth-status-box" style="padding:10px 12px;border-radius:8px;font-size:12.5px;background:#f8fafc;border:1px solid #cbd5e1;">
+            Estado actual: Comprobando credenciales...
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeAuthModal()">Cerrar</button>
+          <button type="submit" class="btn btn-primary">✅ Activar y Guardar en este Dispositivo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DOCUMENTO DINÁMICO EXCLUSIVO PARA IMPRESIÓN A4 (@media print) -->
+  <section id="print-document" aria-hidden="true"></section>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

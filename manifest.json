@@ -1,0 +1,32 @@
+{
+  "name": "Navidad 2026 · Gestión Integral del Evento",
+  "short_name": "Navidad 2026",
+  "description": "Plataforma PWA multiplataforma para gestión de logística, catering, cocina, tareas, cronograma y presupuesto de la Fiesta de Navidad (18 Diciembre 2026).",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f172a",
+  "theme_color": "#991b1b",
+  "lang": "es-ES",
+  "icons": [
+    {
+      "src": "img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
