@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Navidad 2026 · Modo Sencillo Compañeros (Móvil / Tablet)</title>
+  <meta name="description" content="Acceso rápido para incorporar ideas, solicitudes, comidas, utensilios, decoración y consultar/actualizar el stock de la Fiesta de Navidad 2026." />
+
+  <meta name="theme-color" content="#991b1b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Navidad 2026" />
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="img/icon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-mode="movil-only">
+
+  <!-- CABECERA ULTRA SENCILLA PARA TELÉFONO Y TABLET -->
+  <header class="topbar" style="background:linear-gradient(90deg,#0f172a 0%,#7f1d1d 100%);color:#fff;border-bottom:none;">
+    <div class="topbar-left">
+      <img src="img/icon.svg" alt="Navidad 2026" style="width:36px;height:36px;border-radius:8px;" />
+      <div>
+        <div style="font-weight:900;font-size:15.5px;color:#fde047;line-height:1.15;">🎄 NAVIDAD 2026</div>
+        <div style="font-size:11.5px;color:#e2e8f0;">Aportaciones Rápidas y Stock · 18 Dic</div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <div id="sync-status-btn" class="sync-indicator synced" onclick="App.syncNow(true)" title="Sincronizar ahora">
+        <span class="sync-dot"></span>
+        <span id="sync-status-text">Sincronizado</span>
+      </div>
+
+      <a href="https://visualxet.github.io/Navidad2026/" target="_blank" rel="noopener"
+        class="btn btn-secondary btn-sm"
+        style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:800;text-decoration:none;"
+        title="Abrir Web Online en GitHub Pages">
+        🌐 Web GitHub
+      </a>
+
+      <button type="button" class="btn btn-secondary btn-sm" onclick="App.copyGitHubLink()"
+        id="copy-gh-link-btn"
+        style="background:#f0fdf4;border-color:#86efac;color:#166534;font-weight:800;"
+        title="Copiar enlace de la web para enviar a compañeros">
+        📋 Copiar Link
+      </button>
+
+      <button class="btn btn-secondary btn-sm" onclick="App.openAuthModal()" title="Configurar usuario o PIN">
+        👤 <span id="topbar-user-label">TeTe</span> ⚙️
+      </button>
+
+      <a href="index.html" class="btn btn-secondary btn-sm" style="text-decoration:none;font-weight:800;">
+        💻 Panel Completo
+      </a>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL MÓVIL / TABLET -->
+  <main class="content-container" id="main-view-container" style="padding-top:14px;padding-bottom:40px;">
+    <!-- Se inyecta dinámicamente desde js/app.js (renderQuickMobileView) -->
+  </main>
+
+  <!-- MODAL UNIVERSAL CRUD (Para editar algún detalle si se desea) -->
+  <div class="modal-backdrop" id="crud-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="crud-modal-title">Editar Registro</h3>
+        <button class="btn btn-secondary btn-sm" onclick="App.closeCrudModal()">✕</button>
+      </div>
+      <form id="crud-form" onsubmit="App.saveCrudForm(event)">
+        <div class="modal-body" id="crud-modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="crud-delete-btn" style="margin-right:auto;display:none;" onclick="App.deleteCrudRecord()">
+            🗑️ Eliminar
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="App.closeCrudModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">💾 Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE IDENTIFICACIÓN DE USUARIO Y CLAVE PIN -->
+  <div class="modal-backdrop" id="auth-modal">
+    <div class="modal-box" style="max-width:480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🔐 ¿Quién eres? y PIN del Equipo</h3>
+        <button class="btn btn-secondary btn-sm" onclick="App.closeAuthModal()">✕</button>
+      </div>
+      <form onsubmit="App.saveAuthModal(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="auth-user-name-input">1. ¿Quién eres? (Selecciona tu perfil o escribe tu nombre)</label>
+            <div id="auth-user-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px;"></div>
+            <input
+              type="text"
+              id="auth-user-name-input"
+              class="form-control"
+              style="margin-top:6px;"
+              placeholder="Selecciona un botón arriba o escribe quién eres"
+              oninput="App.handleUserNameInput(this.value)"
+            />
+          </div>
+
+          <div class="form-group" style="margin-top:8px;">
+            <label for="auth-pin-input">2. PIN / Clave de Acceso del Equipo (Sincronización Nube GitHub)</label>
+            <input
+              type="password"
+              id="auth-pin-input"
+              class="form-control"
+              placeholder="Introduce el PIN de 6 dígitos (ej. 123456)"
+              autocomplete="current-password"
+            />
+          </div>
+
+          <div id="auth-status-box" style="padding:10px 12px;border-radius:8px;font-size:12.5px;background:#f8fafc;border:1px solid #cbd5e1;">
+            Estado actual: Comprobando credenciales...
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeAuthModal()">Cerrar</button>
+          <button type="submit" class="btn btn-primary">✅ Activar y Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <section id="print-document" aria-hidden="true"></section>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
