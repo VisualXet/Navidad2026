@@ -213,7 +213,8 @@ html, body {
 .topbar-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px 12px;
+  flex-wrap: wrap;
 }
 
 .view-title {
@@ -221,19 +222,21 @@ html, body {
   font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
 .countdown-pill {
   background: #fef2f2;
-  border: 1px solid #fecaca;
+  border: 1.5px solid #fca5a5;
   color: #991b1b;
-  font-weight: 700;
-  font-size: 12px;
-  padding: 4px 10px;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 5px 12px;
   border-radius: 99px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1.3;
+  flex-shrink: 0;
 }
 
 .topbar-actions {
@@ -1010,15 +1013,31 @@ html, body {
   color: #166534;
 }
 
+.quick-submit-btn {
+  width: 100%;
+  white-space: normal !important;
+  word-break: break-word;
+  text-align: center;
+  line-height: 1.3;
+  padding: 13px 16px !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(153, 27, 27, 0.28);
+}
+
 /* En vista móvil / Aportar Rápido y Stock, ocultar botones de gestión (GitHub, copiar link, sincronizar, actualizar web, imprimir, excel) */
 body[data-view="quick"] .mgmt-only-action,
-body[data-mode="movil-only"] .mgmt-only-action {
+body[data-mode="movil-only"] .mgmt-only-action,
+body[data-view="quick"] #sync-status-btn,
+body[data-mode="movil-only"] #sync-status-btn {
   display: none !important;
 }
 
 @media (max-width: 768px) {
   .mgmt-only-action,
-  .mgmt-only-desktop {
+  .mgmt-only-desktop,
+  #sync-status-btn {
     display: none !important;
   }
 }
@@ -1052,6 +1071,12 @@ body.dark-theme {
   --text-light: #94a3b8;
   --border-color: #334155;
   --border-strong: #475569;
+}
+
+[data-theme="dark"] .countdown-pill {
+  background: rgba(220, 38, 38, 0.22);
+  border-color: #f87171;
+  color: #fecaca;
 }
 
 [data-theme="dark"] .topbar,
