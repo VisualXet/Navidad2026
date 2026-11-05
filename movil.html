@@ -35,32 +35,14 @@
     </div>
 
     <div class="topbar-actions">
-      <div id="sync-status-btn" class="sync-indicator synced" onclick="App.syncNow(true)" title="Sincronizar ahora">
-        <span class="sync-dot"></span>
-        <span id="sync-status-text">Sincronizado</span>
-      </div>
-
-      <a href="https://visualxet.github.io/Navidad2026/" target="_blank" rel="noopener"
-        class="btn btn-secondary btn-sm"
-        style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:800;text-decoration:none;"
-        title="Abrir Web Online en GitHub Pages">
-        🌐 Web GitHub
-      </a>
-
-      <button type="button" class="btn btn-secondary btn-sm" onclick="App.copyGitHubLink()"
-        id="copy-gh-link-btn"
-        style="background:#f0fdf4;border-color:#86efac;color:#166534;font-weight:800;"
-        title="Copiar enlace de la web para enviar a compañeros">
-        📋 Copiar Link
+      <button type="button" class="btn btn-secondary btn-sm" id="theme-toggle-btn" onclick="App.toggleTheme()"
+        title="Cambiar entre modo oscuro y claro" style="font-weight:800;">
+        🌙 Oscuro
       </button>
 
       <button class="btn btn-secondary btn-sm" onclick="App.openAuthModal()" title="Configurar usuario o PIN">
         👤 <span id="topbar-user-label">TeTe</span> ⚙️
       </button>
-
-      <a href="index.html" class="btn btn-secondary btn-sm" style="text-decoration:none;font-weight:800;">
-        💻 Panel Completo
-      </a>
     </div>
   </header>
 
