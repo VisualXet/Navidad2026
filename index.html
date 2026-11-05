@@ -143,35 +143,41 @@
         </div>
 
         <div class="topbar-actions">
-          <!-- Estado de Sincronización GitHub -->
-          <div id="sync-status-btn" class="sync-indicator synced" onclick="App.syncNow(true)"
+          <!-- Botón Modo Oscuro / Claro (Visible en Gestión y en Móvil) -->
+          <button type="button" class="btn btn-secondary btn-sm" id="theme-toggle-btn" onclick="App.toggleTheme()"
+            title="Cambiar entre tema oscuro y tema claro" style="font-weight:800;">
+            🌙 Oscuro
+          </button>
+
+          <!-- Estado de Sincronización GitHub (Solo Gestión) -->
+          <div id="sync-status-btn" class="sync-indicator synced mgmt-only-action" onclick="App.syncNow(true)"
             title="Haz clic para sincronizar con GitHub ahora">
             <span class="sync-dot"></span>
             <span id="sync-status-text">Sincronizado</span>
           </div>
 
           <a href="https://visualxet.github.io/Navidad2026/" target="_blank" rel="noopener"
-            class="btn btn-secondary btn-sm"
+            class="btn btn-secondary btn-sm mgmt-only-action"
             style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:800;text-decoration:none;"
             title="Abrir Web Online en GitHub Pages (https://visualxet.github.io/Navidad2026/)">
             🌐 Link Web GitHub
           </a>
 
-          <button type="button" class="btn btn-secondary btn-sm" onclick="App.copyGitHubLink()"
+          <button type="button" class="btn btn-secondary btn-sm mgmt-only-action" onclick="App.copyGitHubLink()"
             id="copy-gh-link-btn"
             style="background:#f0fdf4;border-color:#86efac;color:#166534;font-weight:800;"
             title="Copiar enlace https://visualxet.github.io/Navidad2026/ al portapapeles">
             📋 Copiar Link
           </button>
 
-          <button type="button" class="btn btn-secondary btn-sm" onclick="App.publishWebToGitHub(false)"
+          <button type="button" class="btn btn-secondary btn-sm mgmt-only-action" onclick="App.publishWebToGitHub(false)"
             id="publish-gh-web-btn"
             style="background:#faf5ff;border-color:#d8b4fe;color:#6b21a8;font-weight:800;"
             title="Subir archivos HTML/JS/CSS actualizados del ordenador a GitHub Pages">
             ☁️ Actualizar Web GitHub
           </button>
 
-          <button class="btn btn-secondary btn-sm"
+          <button class="btn btn-secondary btn-sm mgmt-only-desktop"
             onclick="App.setView(App.currentView === 'quick' ? 'dashboard' : 'quick')" id="toggle-quick-mode-btn"
             style="background:#fef9c3;border-color:#facc15;color:#854d0e;font-weight:800;">
             📱 Aportar / Stock Rápido
@@ -182,17 +188,17 @@
             👤 <span id="topbar-user-label">TeTe</span>
           </button>
 
-          <button class="btn btn-secondary btn-sm" onclick="App.printCurrentView()"
+          <button class="btn btn-secondary btn-sm mgmt-only-action" onclick="App.printCurrentView()"
             title="Imprimir exactamente la vista y filtros actuales en formato A4 limpio">
             🖨️ Imprimir Vista
           </button>
 
-          <button class="btn btn-secondary btn-sm" onclick="App.exportCurrentCSV()"
+          <button class="btn btn-secondary btn-sm mgmt-only-action" onclick="App.exportCurrentCSV()"
             title="Exportar tabla filtrada a CSV compatible con Excel">
             📊 Excel/CSV
           </button>
 
-          <button class="btn btn-primary btn-sm" id="primary-add-btn" onclick="App.handlePrimaryAdd()">
+          <button class="btn btn-primary btn-sm mgmt-only-action" id="primary-add-btn" onclick="App.handlePrimaryAdd()">
             ➕ Nuevo Registro
           </button>
         </div>
