@@ -23,7 +23,8 @@ const STORAGE_KEYS = {
   ACTIVE_USER_CUSTOM_NAME: 'navidad2026_active_user_custom_name',
   DB_CACHE: 'navidad2026_db_cache',
   LAST_SHA: 'navidad2026_last_sha',
-  PENDING_SYNC: 'navidad2026_pending_sync'
+  PENDING_SYNC: 'navidad2026_pending_sync',
+  THEME: 'navidad2026_theme'
 };
 
 const DEFAULT_USERS = [
@@ -180,6 +181,7 @@ const App = {
   quickToastMessage: '',
   activeUserId: localStorage.getItem(STORAGE_KEYS.ACTIVE_USER) || 'tete',
   customUserName: localStorage.getItem(STORAGE_KEYS.ACTIVE_USER_CUSTOM_NAME) || '',
+  theme: localStorage.getItem(STORAGE_KEYS.THEME) || 'light',
   ghToken: localStorage.getItem(STORAGE_KEYS.TOKEN) || '',
   lastSha: localStorage.getItem(STORAGE_KEYS.LAST_SHA) || null,
   hasPendingSync: localStorage.getItem(STORAGE_KEYS.PENDING_SYNC) === 'true',
@@ -203,6 +205,7 @@ const App = {
      1. INICIALIZACIÓN Y CICLO DE VIDA PWA
      ======================================================================== */
   async init() {
+    this.applyTheme();
     this.registerServiceWorker();
     this.updateCountdown();
 
@@ -267,6 +270,25 @@ const App = {
         console.warn('SW no registrado:', err);
       });
     }
+  },
+
+  applyTheme() {
+    const isDark = this.theme === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    if (document.body) {
+      document.body.classList.toggle('dark-theme', isDark);
+    }
+    const btn = document.getElementById('theme-toggle-btn');
+    if (btn) {
+      btn.innerHTML = isDark ? '☀️ Claro' : '🌙 Oscuro';
+      btn.title = isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+    }
+  },
+
+  toggleTheme() {
+    this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(STORAGE_KEYS.THEME, this.theme);
+    this.applyTheme();
   },
 
   updateCountdown() {
@@ -968,6 +990,9 @@ const App = {
      ======================================================================== */
   setView(viewName) {
     this.currentView = viewName;
+    if (document.body) {
+      document.body.dataset.view = viewName;
+    }
 
     document.querySelectorAll('.nav-btn, .bottom-nav-btn').forEach((btn) => {
       btn.classList.toggle('active', btn.dataset.view === viewName);
@@ -1639,7 +1664,7 @@ const App = {
           this.quickTab === 'aportar'
             ? `
           <!-- PARTE 1: INCORPORAR FÁCILMENTE IDEAS, SOLICITUDES, COMIDAS, UTENSILIOS, DECORACIÓN, SERVICIOS -->
-          <div class="panel-card" style="padding:18px;border:2px solid #cbd5e1;">
+          <div class="panel-card" style="padding:18px;border:2px solid var(--border-strong);">
             <div style="font-weight:900;font-size:16px;margin-bottom:10px;color:var(--text-main);">
               1️⃣ ¿Qué quieres incorporar a la fiesta?
             </div>
@@ -1732,7 +1757,7 @@ const App = {
                 <div class="quick-feed-item">
                   <div style="flex:1;min-width:180px;">
                     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px;">
-                      <span class="badge" style="background:#f1f5f9;color:#0f172a;border:1px solid #cbd5e1;">
+                      <span class="badge" style="background:var(--bg-subtle);color:var(--text-main);border:1px solid var(--border-strong);">
                         ${this.escapeHtml(item.subcategory || item.category)}
                       </span>
                       ${this.renderSectorBadge(item.sector)}
@@ -1765,21 +1790,21 @@ const App = {
         `
             : `
           <!-- PARTE 2: INVENTARIO Y STOCK DISPONIBLE (MATERIAL DEL AÑO PASADO E INSTALACIONES) -->
-          <div class="panel-card" style="padding:18px;border:2px solid #86efac;background:#f0fdf4;">
-            <div style="font-weight:900;font-size:15.5px;color:#166534;margin-bottom:8px;">
+          <div class="panel-card quick-stock-add-box" style="padding:18px;">
+            <div class="quick-stock-add-title" style="font-weight:900;font-size:15.5px;margin-bottom:8px;">
               ➕ Añadir Nuevo Material / Utensilio a nuestro Stock
             </div>
             <form onsubmit="App.submitQuickStock(event)" style="display:grid;grid-template-columns:1fr 90px 90px auto;gap:8px;align-items:end;" class="quick-stock-form-grid">
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#166534;">Material / Utensilio en almacén *</label>
+                <label class="quick-stock-add-label" style="font-size:11.5px;font-weight:700;">Material / Utensilio en almacén *</label>
                 <input type="text" id="quick-stock-concept" class="form-control" required placeholder="Ej. Servilletas negras, Copas plástico, Manteles..." />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#166534;">Cantidad *</label>
+                <label class="quick-stock-add-label" style="font-size:11.5px;font-weight:700;">Cantidad *</label>
                 <input type="number" step="any" id="quick-stock-qty" class="form-control" required value="50" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#166534;">Unidad</label>
+                <label class="quick-stock-add-label" style="font-size:11.5px;font-weight:700;">Unidad</label>
                 <input type="text" id="quick-stock-unit" class="form-control" value="ud" placeholder="ud, cajas..." />
               </div>
               <button type="submit" class="btn btn-primary" style="background:#16a34a;padding:10px 16px;font-weight:800;">
