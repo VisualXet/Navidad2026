@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 4,
-    "lastUpdated": "2026-11-05T14:48:35.605Z",
+    "version": 5,
+    "lastUpdated": "2026-11-05T14:48:54.836Z",
     "lastUpdatedBy": "TeTe",
     "users": [
       {
@@ -324,7 +324,7 @@
       "qtyConfirmed": 1,
       "unit": "servicio",
       "originType": "Propio",
-      "providerName": "",
+      "providerName": "Medios Propios / Clemot",
       "providerContact": "",
       "responsibleId": "tete",
       "status": "Confirmado",
@@ -333,7 +333,7 @@
       "amountPaid": 0,
       "paymentStatus": "Pendiente",
       "notes": "Música ambiental en comida y sesión fiesta de 14:30h a 24:00h.",
-      "updatedAt": "2026-11-05T14:48:35.605Z",
+      "updatedAt": "2026-11-05T14:48:54.836Z",
       "updatedBy": "TeTe"
     },
     {
