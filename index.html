@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
   <title>Navidad 2026 · Gestión Integral Fiesta de Empresa (18 Dic)</title>
-  <meta name="description" content="Aplicación PWA multiplataforma para organización, logística, catering, cocina, tareas, cronograma y presupuesto de la Fiesta de Navidad (18 de diciembre de 2026)." />
+  <meta name="description"
+    content="Aplicación PWA multiplataforma para organización, logística, catering, cocina, tareas, cronograma y presupuesto de la Fiesta de Navidad (18 de diciembre de 2026)." />
 
   <!-- PWA & Mobile Meta Tags (iOS / iPadOS / Android / Windows) -->
   <meta name="theme-color" content="#991b1b" />
@@ -24,6 +26,7 @@
 
   <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
 
   <div class="app-shell">
@@ -43,16 +46,24 @@
           <div id="sidebar-user-avatar" class="user-avatar" style="background:#2563eb;">TT</div>
           <div style="min-width:0;">
             <div style="font-size:11px;color:#94a3b8;">Conectado como:</div>
-            <div id="sidebar-user-name" style="font-weight:800;font-size:13.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">TeTe (Gestión)</div>
+            <div id="sidebar-user-name"
+              style="font-weight:800;font-size:13.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              TeTe (Gestión)</div>
           </div>
         </div>
-        <button class="btn btn-sm" style="background:rgba(255,255,255,0.14);color:#fff;padding:4px 8px;" onclick="App.openAuthModal()" title="Cambiar usuario o configurar PIN">
+        <button class="btn btn-sm" style="background:rgba(255,255,255,0.14);color:#fff;padding:4px 8px;"
+          onclick="App.openAuthModal()" title="Cambiar usuario o configurar PIN">
           ⚙️
         </button>
       </div>
 
       <!-- Navegación Principal -->
       <nav class="sidebar-nav">
+        <button class="nav-btn" data-view="quick" onclick="App.setView('quick')"
+          style="background:rgba(250,204,21,0.14);color:#fde047;border:1px solid rgba(250,204,21,0.3);margin-bottom:4px;">
+          <span>📱</span>
+          <span>Aportar Rápido y Stock</span>
+        </button>
         <button class="nav-btn active" data-view="dashboard" onclick="App.setView('dashboard')">
           <span>📊</span>
           <span>Cuadro de Mando</span>
@@ -80,20 +91,44 @@
 
       <!-- Acciones Rápidas de Pie de Sidebar -->
       <div class="sidebar-footer">
-        <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="App.printCurrentView()">
+        <div style="display:flex;gap:6px;">
+          <a href="https://visualxet.github.io/Navidad2026/" target="_blank" rel="noopener" class="btn btn-sm"
+            style="flex:1;background:#2563eb;color:#fff;text-decoration:none;font-weight:800;" title="Abrir la web publicada en GitHub Pages">
+            🌐 Web GitHub
+          </a>
+          <button type="button" class="btn btn-sm"
+            style="background:rgba(255,255,255,0.16);color:#fde047;font-weight:800;"
+            onclick="App.copyGitHubLink()" title="Copiar enlace de la web para compartir por WhatsApp">
+            📋 Copiar Link
+          </button>
+        </div>
+        <a href="https://github.com/VisualXet/Navidad2026" target="_blank" rel="noopener" class="btn btn-sm"
+          style="width:100%;justify-content:flex-start;background:rgba(255,255,255,0.1);color:#e2e8f0;text-decoration:none;">
+          🐙 Repositorio GitHub (VisualXet/Navidad2026)
+        </a>
+        <a href="movil.html" class="btn btn-primary"
+          style="width:100%;justify-content:flex-start;text-decoration:none;background:#16a34a;">
+          📱 Web Sencilla (Móvil / Tablet)
+        </a>
+        <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;"
+          onclick="App.printCurrentView()">
           🖨️ Imprimir Vista Filtrada (A4)
         </button>
-        <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="App.exportCurrentCSV()">
+        <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;"
+          onclick="App.exportCurrentCSV()">
           📥 Exportar Vista a Excel (CSV)
         </button>
         <div style="display:flex;gap:6px;">
-          <button class="btn btn-sm" style="flex:1;background:rgba(255,255,255,0.1);color:#e2e8f0;" onclick="App.exportFullJSON()" title="Descargar copia de seguridad JSON">
+          <button class="btn btn-sm" style="flex:1;background:rgba(255,255,255,0.1);color:#e2e8f0;"
+            onclick="App.exportFullJSON()" title="Descargar copia de seguridad JSON">
             💾 Backup JSON
           </button>
-          <button class="btn btn-sm" style="flex:1;background:rgba(255,255,255,0.1);color:#e2e8f0;" onclick="document.getElementById('import-json-input').click()" title="Restaurar JSON">
+          <button class="btn btn-sm" style="flex:1;background:rgba(255,255,255,0.1);color:#e2e8f0;"
+            onclick="document.getElementById('import-json-input').click()" title="Restaurar JSON">
             📂 Importar
           </button>
-          <input type="file" id="import-json-input" accept=".json" style="display:none" onchange="App.importFullJSON(event)" />
+          <input type="file" id="import-json-input" accept=".json" style="display:none"
+            onchange="App.importFullJSON(event)" />
         </div>
       </div>
     </aside>
@@ -109,20 +144,51 @@
 
         <div class="topbar-actions">
           <!-- Estado de Sincronización GitHub -->
-          <div id="sync-status-btn" class="sync-indicator synced" onclick="App.syncNow(true)" title="Haz clic para sincronizar con GitHub ahora">
+          <div id="sync-status-btn" class="sync-indicator synced" onclick="App.syncNow(true)"
+            title="Haz clic para sincronizar con GitHub ahora">
             <span class="sync-dot"></span>
             <span id="sync-status-text">Sincronizado</span>
           </div>
 
-          <button class="btn btn-secondary btn-sm" onclick="App.openAuthModal()" title="Cambiar organizador activo o PIN de sincronización">
+          <a href="https://visualxet.github.io/Navidad2026/" target="_blank" rel="noopener"
+            class="btn btn-secondary btn-sm"
+            style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:800;text-decoration:none;"
+            title="Abrir Web Online en GitHub Pages (https://visualxet.github.io/Navidad2026/)">
+            🌐 Link Web GitHub
+          </a>
+
+          <button type="button" class="btn btn-secondary btn-sm" onclick="App.copyGitHubLink()"
+            id="copy-gh-link-btn"
+            style="background:#f0fdf4;border-color:#86efac;color:#166534;font-weight:800;"
+            title="Copiar enlace https://visualxet.github.io/Navidad2026/ al portapapeles">
+            📋 Copiar Link
+          </button>
+
+          <button type="button" class="btn btn-secondary btn-sm" onclick="App.publishWebToGitHub(false)"
+            id="publish-gh-web-btn"
+            style="background:#faf5ff;border-color:#d8b4fe;color:#6b21a8;font-weight:800;"
+            title="Subir archivos HTML/JS/CSS actualizados del ordenador a GitHub Pages">
+            ☁️ Actualizar Web GitHub
+          </button>
+
+          <button class="btn btn-secondary btn-sm"
+            onclick="App.setView(App.currentView === 'quick' ? 'dashboard' : 'quick')" id="toggle-quick-mode-btn"
+            style="background:#fef9c3;border-color:#facc15;color:#854d0e;font-weight:800;">
+            📱 Aportar / Stock Rápido
+          </button>
+
+          <button class="btn btn-secondary btn-sm" onclick="App.openAuthModal()"
+            title="Cambiar organizador activo o PIN de sincronización">
             👤 <span id="topbar-user-label">TeTe</span>
           </button>
 
-          <button class="btn btn-secondary btn-sm" onclick="App.printCurrentView()" title="Imprimir exactamente la vista y filtros actuales en formato A4 limpio">
+          <button class="btn btn-secondary btn-sm" onclick="App.printCurrentView()"
+            title="Imprimir exactamente la vista y filtros actuales en formato A4 limpio">
             🖨️ Imprimir Vista
           </button>
 
-          <button class="btn btn-secondary btn-sm" onclick="App.exportCurrentCSV()" title="Exportar tabla filtrada a CSV compatible con Excel">
+          <button class="btn btn-secondary btn-sm" onclick="App.exportCurrentCSV()"
+            title="Exportar tabla filtrada a CSV compatible con Excel">
             📊 Excel/CSV
           </button>
 
@@ -133,21 +199,25 @@
       </header>
 
       <!-- BARRA TRANSVERSAL DE FILTROS (4 SECTORES + 4 USUARIOS + ESTADO + BÚSQUEDA) -->
-      <section class="global-filter-bar">
+      <section class="global-filter-bar" id="global-filter-bar">
         <div class="filter-row">
           <div class="sector-pills">
             <span class="filter-label">Sector:</span>
             <button class="pill-btn active" data-sector="ALL" onclick="App.setFilter('sector', 'ALL')">Todos</button>
             <button class="pill-btn" data-sector="Cocina" onclick="App.setFilter('sector', 'Cocina')">🍳 Cocina</button>
-            <button class="pill-btn" data-sector="Catering" onclick="App.setFilter('sector', 'Catering')">🥂 Catering</button>
-            <button class="pill-btn" data-sector="Administración" onclick="App.setFilter('sector', 'Administración')">📋 Administración</button>
-            <button class="pill-btn" data-sector="Organización" onclick="App.setFilter('sector', 'Organización')">🎄 Organización</button>
+            <button class="pill-btn" data-sector="Catering" onclick="App.setFilter('sector', 'Catering')">🥂
+              Catering</button>
+            <button class="pill-btn" data-sector="Administración" onclick="App.setFilter('sector', 'Administración')">📋
+              Administración</button>
+            <button class="pill-btn" data-sector="Organización" onclick="App.setFilter('sector', 'Organización')">🎄
+              Organización</button>
           </div>
 
           <div class="user-pills">
             <span class="filter-label">Responsable:</span>
             <button class="pill-btn active" data-user="ALL" onclick="App.setFilter('user', 'ALL')">Equipo (4)</button>
-            <button class="pill-btn" data-user="MINE" onclick="App.setFilter('user', 'MINE')">⭐ Mis Asignaciones</button>
+            <button class="pill-btn" data-user="MINE" onclick="App.setFilter('user', 'MINE')">⭐ Mis
+              Asignaciones</button>
             <button class="pill-btn" data-user="tete" onclick="App.setFilter('user', 'tete')">TeTe</button>
             <button class="pill-btn" data-user="bea" onclick="App.setFilter('user', 'bea')">Bea</button>
             <button class="pill-btn" data-user="leli" onclick="App.setFilter('user', 'leli')">Leli</button>
@@ -172,13 +242,8 @@
               <option value="Completado">Completado / Completada</option>
             </select>
 
-            <input
-              type="search"
-              id="global-search-input"
-              class="search-input"
-              placeholder="🔍 Buscar concepto, proveedor, nota..."
-              oninput="App.setFilter('search', this.value)"
-            />
+            <input type="search" id="global-search-input" class="search-input"
+              placeholder="🔍 Buscar concepto, proveedor, nota..." oninput="App.setFilter('search', this.value)" />
 
             <button class="btn btn-secondary btn-sm" onclick="App.resetFilters()" title="Limpiar todos los filtros">
               Limpiar
@@ -193,8 +258,12 @@
       </main>
     </div>
 
-    <!-- BARRA INFERIOR MÓVIL (iPhone / Android) -->
+    <!-- BARRA INFERIOR MÓVIL (iPhone / Android / Tablet) -->
     <nav class="bottom-nav">
+      <button class="bottom-nav-btn" data-view="quick" onclick="App.setView('quick')">
+        <span class="bottom-nav-icon">➕</span>
+        <span>Aportar/Stock</span>
+      </button>
       <button class="bottom-nav-btn active" data-view="dashboard" onclick="App.setView('dashboard')">
         <span class="bottom-nav-icon">📊</span>
         <span>Resumen</span>
@@ -211,10 +280,6 @@
         <span class="bottom-nav-icon">⏱️</span>
         <span>Horarios</span>
       </button>
-      <button class="bottom-nav-btn" data-view="budget" onclick="App.setView('budget')">
-        <span class="bottom-nav-icon">💶</span>
-        <span>Costes</span>
-      </button>
     </nav>
   </div>
 
@@ -228,7 +293,8 @@
       <form id="crud-form" onsubmit="App.saveCrudForm(event)">
         <div class="modal-body" id="crud-modal-body"></div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" id="crud-delete-btn" style="margin-right:auto;display:none;" onclick="App.deleteCrudRecord()">
+          <button type="button" class="btn btn-danger" id="crud-delete-btn" style="margin-right:auto;display:none;"
+            onclick="App.deleteCrudRecord()">
             🗑️ Eliminar
           </button>
           <button type="button" class="btn btn-secondary" onclick="App.closeCrudModal()">Cancelar</button>
@@ -238,7 +304,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE IDENTIFICACIÓN DE USUARIO Y CLAVE PIN (509066) -->
+  <!-- MODAL DE IDENTIFICACIÓN DE USUARIO Y CLAVE PIN -->
   <div class="modal-backdrop" id="auth-modal">
     <div class="modal-box" style="max-width:480px;">
       <div class="modal-header">
@@ -248,27 +314,62 @@
       <form onsubmit="App.saveAuthModal(event)">
         <div class="modal-body">
           <div class="form-group">
-            <label>1. ¿Quién eres? (Selecciona tu perfil en este dispositivo)</label>
+            <label for="auth-user-name-input">1. ¿Quién eres? (Selecciona tu perfil o escribe tu nombre)</label>
             <div id="auth-user-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px;">
-              <!-- Botones de selección TeTe, Bea, Leli, Jose -->
+              <button type="button" class="btn btn-dark"
+                style="justify-content:flex-start;padding:10px 12px;border-width:2px;border-color:#2563eb;"
+                onclick="App.selectUserInModal('tete')">
+                <span class="user-chip-dot" style="background:#2563eb;width:24px;height:24px;">TT</span>
+                <div style="text-align:left;line-height:1.2;">
+                  <div style="font-weight:800;font-size:13px;">TeTe ✓</div>
+                  <div style="font-size:11px;opacity:0.85;">Organización</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                style="justify-content:flex-start;padding:10px 12px;border-width:2px;"
+                onclick="App.selectUserInModal('bea')">
+                <span class="user-chip-dot" style="background:#9333ea;width:24px;height:24px;">BE</span>
+                <div style="text-align:left;line-height:1.2;">
+                  <div style="font-weight:800;font-size:13px;">Bea</div>
+                  <div style="font-size:11px;opacity:0.85;">Catering</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                style="justify-content:flex-start;padding:10px 12px;border-width:2px;"
+                onclick="App.selectUserInModal('leli')">
+                <span class="user-chip-dot" style="background:#d97706;width:24px;height:24px;">LE</span>
+                <div style="text-align:left;line-height:1.2;">
+                  <div style="font-weight:800;font-size:13px;">Leli</div>
+                  <div style="font-size:11px;opacity:0.85;">Administración</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-secondary"
+                style="justify-content:flex-start;padding:10px 12px;border-width:2px;"
+                onclick="App.selectUserInModal('jose')">
+                <span class="user-chip-dot" style="background:#16a34a;width:24px;height:24px;">JO</span>
+                <div style="text-align:left;line-height:1.2;">
+                  <div style="font-weight:800;font-size:13px;">Jose</div>
+                  <div style="font-size:11px;opacity:0.85;">Cocina</div>
+                </div>
+              </button>
             </div>
+            <input type="text" id="auth-user-name-input" class="form-control" style="margin-top:6px;"
+              placeholder="Selecciona un botón arriba o escribe quién eres (ej. TeTe, Bea, Leli, Jose)"
+              oninput="App.handleUserNameInput(this.value)" />
           </div>
 
           <div class="form-group" style="margin-top:8px;">
             <label for="auth-pin-input">2. PIN / Clave de Acceso del Equipo (Sincronización Nube GitHub)</label>
-            <input
-              type="password"
-              id="auth-pin-input"
-              class="form-control"
-              placeholder="Introduce el PIN de 6 dígitos (ej. 509066)"
-              autocomplete="current-password"
-            />
+            <input type="password" id="auth-pin-input" class="form-control"
+              placeholder="Introduce el PIN de 6 dígitos (ej. 123456)" autocomplete="current-password" />
             <span style="font-size:11.5px;color:var(--text-light);">
-              El PIN desencripta localmente la credencial de GitHub (`VisualXet/Navidad2026`) y queda recordado en este iPhone, iPad o PC.
+              El PIN desencripta localmente la credencial de GitHub (`VisualXet/Navidad2026`) y queda recordado en este
+              iPhone, iPad o PC.
             </span>
           </div>
 
-          <div id="auth-status-box" style="padding:10px 12px;border-radius:8px;font-size:12.5px;background:#f8fafc;border:1px solid #cbd5e1;">
+          <div id="auth-status-box"
+            style="padding:10px 12px;border-radius:8px;font-size:12.5px;background:#f8fafc;border:1px solid #cbd5e1;">
             Estado actual: Comprobando credenciales...
           </div>
         </div>
@@ -283,6 +384,8 @@
   <!-- DOCUMENTO DINÁMICO EXCLUSIVO PARA IMPRESIÓN A4 (@media print) -->
   <section id="print-document" aria-hidden="true"></section>
 
+  <script src="js/web-bundle.js"></script>
   <script src="js/app.js"></script>
 </body>
+
 </html>
