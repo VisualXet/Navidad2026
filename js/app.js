@@ -275,14 +275,15 @@ const App = {
   applyTheme() {
     const isDark = this.theme === 'dark';
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark-theme', isDark);
     if (document.body) {
+      document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
       document.body.classList.toggle('dark-theme', isDark);
     }
-    const btn = document.getElementById('theme-toggle-btn');
-    if (btn) {
+    document.querySelectorAll('#theme-toggle-btn, .theme-toggle-btn').forEach((btn) => {
       btn.innerHTML = isDark ? '☀️ Claro' : '🌙 Oscuro';
       btn.title = isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
-    }
+    });
   },
 
   toggleTheme() {
@@ -298,11 +299,11 @@ const App = {
     const now = new Date();
     const diffDays = Math.ceil((eventDate - now) / (1000 * 60 * 60 * 24));
     if (diffDays > 0) {
-      badge.innerHTML = `🎄 Faltan <strong>${diffDays} días</strong> · 18 Dic 2026`;
+      badge.innerHTML = `<span>🎄 Faltan <strong>${diffDays} días</strong> · 18 Dic 2026</span>`;
     } else if (diffDays === 0) {
-      badge.innerHTML = `🥂 ¡HOY ES EL EVENTO! · 18 Dic 2026`;
+      badge.innerHTML = `<span>🥂 ¡HOY ES EL EVENTO! · 18 Dic 2026</span>`;
     } else {
-      badge.innerHTML = `🎄 Evento 18 Dic 2026`;
+      badge.innerHTML = `<span>🎄 Evento 18 Dic 2026</span>`;
     }
   },
 
@@ -924,7 +925,7 @@ const App = {
 
       if (paths.length === 0) {
         // Intentar leer por fetch si estamos en un servidor local http://
-        const candidatePaths = ['index.html', 'movil.html', 'css/styles.css', 'js/app.js', 'sw.js', 'README.md'];
+        const candidatePaths = ['css/styles.css', 'js/app.js', 'sw.js', 'README.md', 'movil.html', 'index.html'];
         for (const p of candidatePaths) {
           const r = await fetch(`./${p}?t=${Date.now()}`, { cache: 'no-store' });
           if (r.ok) {
@@ -933,7 +934,9 @@ const App = {
         }
       }
 
-      const finalPaths = Object.keys(filesMap);
+      // Subir primero CSS, JS y SW, y por último movil.html e index.html para que GitHub Pages compile con todo listo
+      const priorityOrder = ['css/styles.css', 'js/app.js', 'sw.js', 'README.md', 'movil.html', 'index.html'];
+      const finalPaths = priorityOrder.filter((p) => filesMap[p] !== undefined);
       if (finalPaths.length === 0) {
         throw new Error('No se encontraron archivos locales para publicar.');
       }
@@ -1010,7 +1013,7 @@ const App = {
     }
 
     const titles = {
-      quick: '📱 Modo Sencillo · Aportar Ideas, Solicitudes y Stock',
+      quick: '🎄 Navidad 2026 · Aportar y Stock',
       dashboard: 'Cuadro de Mando General',
       needs: 'Necesidades, Logística y Proveedores',
       tasks: 'Asignación y Seguimiento de Tareas',
@@ -1726,8 +1729,8 @@ const App = {
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-primary" style="padding:14px;font-size:16px;font-weight:900;border-radius:12px;box-shadow:0 4px 14px rgba(153,27,27,0.3);">
-                ➕ INCORPORAR ${selectedType.label.toUpperCase()} (como ${this.escapeHtml(activeUser.name)})
+              <button type="submit" class="btn btn-primary quick-submit-btn">
+                ➕ Incorporar ${this.escapeHtml(selectedType.label)}
               </button>
             </form>
           </div>
