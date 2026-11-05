@@ -9,7 +9,7 @@ const GITHUB_CONFIG = {
   repo: 'Navidad2026',
   branch: 'main',
   dataPath: 'data/db.json',
-  // Bóveda AES-GCM (256-bit, PBKDF2 100.000 iteraciones SHA-256) protegida con el PIN 509066
+  // Bóveda AES-GCM (256-bit, PBKDF2 100.000 iteraciones SHA-256) protegida con el PIN del equipo
   encryptedVault: {
     salt: 'Y+mdAs2mnA/5hVUsz/3w4w==',
     iv: 'N0IDn0vc0DvN9Zk2',
@@ -20,10 +20,46 @@ const GITHUB_CONFIG = {
 const STORAGE_KEYS = {
   TOKEN: 'navidad2026_gh_token',
   ACTIVE_USER: 'navidad2026_active_user',
+  ACTIVE_USER_CUSTOM_NAME: 'navidad2026_active_user_custom_name',
   DB_CACHE: 'navidad2026_db_cache',
   LAST_SHA: 'navidad2026_last_sha',
   PENDING_SYNC: 'navidad2026_pending_sync'
 };
+
+const DEFAULT_USERS = [
+  {
+    id: 'tete',
+    name: 'TeTe',
+    role: 'Gestión y Organización',
+    sector: 'Organización',
+    color: '#2563eb',
+    avatar: 'TT'
+  },
+  {
+    id: 'bea',
+    name: 'Bea',
+    role: 'Catering y Sala',
+    sector: 'Catering',
+    color: '#9333ea',
+    avatar: 'BE'
+  },
+  {
+    id: 'leli',
+    name: 'Leli',
+    role: 'Administración y Presupuesto',
+    sector: 'Administración',
+    color: '#d97706',
+    avatar: 'LE'
+  },
+  {
+    id: 'jose',
+    name: 'Jose',
+    role: 'Jefe de Cocina',
+    sector: 'Cocina',
+    color: '#16a34a',
+    avatar: 'JO'
+  }
+];
 
 const SECTORS = ['Cocina', 'Catering', 'Administración', 'Organización'];
 
@@ -31,7 +67,95 @@ const NEED_CATEGORIES = [
   'Alimentación y Bebidas',
   'Material y Mobiliario',
   'Servicios y Personal',
-  'Espectáculo y Ambientación'
+  'Espectáculo y Ambientación',
+  'Ideas y Solicitudes'
+];
+
+const QUICK_ENTRY_TYPES = [
+  {
+    key: 'idea',
+    icon: '💡',
+    label: 'Idea / Propuesta',
+    placeholder: 'Ej. Bingo musical navideño en la sobremesa, vídeo resumen del año...',
+    category: 'Ideas y Solicitudes',
+    subcategory: 'Idea / Propuesta',
+    sector: 'Organización',
+    originType: 'Propio',
+    defaultUnit: 'propuesta'
+  },
+  {
+    key: 'solicitud',
+    icon: '🔔',
+    label: 'Solicitud / Petición',
+    placeholder: 'Ej. Menú vegetariano/celíaco, estufa exterior para terraza, taxi...',
+    category: 'Ideas y Solicitudes',
+    subcategory: 'Solicitud de Compañero',
+    sector: 'Organización',
+    originType: 'Contratado',
+    defaultUnit: 'solicitud'
+  },
+  {
+    key: 'comida',
+    icon: '🍽️',
+    label: 'Comida / Bebida',
+    placeholder: 'Ej. Tabla de embutidos, sidra achampanada, croquetas caseras, hielo...',
+    category: 'Alimentación y Bebidas',
+    subcategory: 'Comida y Bebida',
+    sector: 'Cocina',
+    originType: 'Contratado',
+    defaultUnit: 'uds'
+  },
+  {
+    key: 'utensilios',
+    icon: '🥄',
+    label: 'Utensilios / Menaje',
+    placeholder: 'Ej. Servilletas doradas, copas de balón, pinzas de hielo, bandejas...',
+    category: 'Material y Mobiliario',
+    subcategory: 'Utensilios y Menaje',
+    sector: 'Catering',
+    originType: 'Contratado',
+    defaultUnit: 'ud'
+  },
+  {
+    key: 'decoracion',
+    icon: '🎄',
+    label: 'Decoración',
+    placeholder: 'Ej. Guirnalda luces cálidas, gorros Papá Noel, centro de mesa...',
+    category: 'Espectáculo y Ambientación',
+    subcategory: 'Decoración',
+    sector: 'Organización',
+    originType: 'Contratado',
+    defaultUnit: 'ud'
+  },
+  {
+    key: 'servicio',
+    icon: '🚚',
+    label: 'Servicio / Música',
+    placeholder: 'Ej. Fotomatón, canción para el DJ, limpieza extra, transporte...',
+    category: 'Servicios y Personal',
+    subcategory: 'Servicios y Apoyo',
+    sector: 'Organización',
+    originType: 'Contratado',
+    defaultUnit: 'servicio'
+  }
+];
+
+const INITIAL_PACKAGING_STOCK = [
+  { id: 'stock_pkg_01', concept: 'Cartucho cartón', qty: 52, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_02', concept: 'Barquetas pino', qty: 54, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_03', concept: 'Cuencos bambú', qty: 44, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_04', concept: 'Mini cuchara negra plástico', qty: 50, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_05', concept: 'Mini tenedor plástico negro', qty: 100, unit: 'ud aprox', sector: 'Catering', responsibleId: 'bea', notes: 'Cantidad aproximada (100 ud aprox). Inventario packaging del año pasado.' },
+  { id: 'stock_pkg_06', concept: 'Cuchara negra plástico compostable', qty: 100, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Plástico compostable. Inventario packaging del año pasado.' },
+  { id: 'stock_pkg_07', concept: 'Tenedor plástico compostable', qty: 120, unit: 'ud aprox', sector: 'Catering', responsibleId: 'bea', notes: 'Plástico compostable (120 ud aprox). Inventario packaging del año pasado.' },
+  { id: 'stock_pkg_08', concept: 'Vasito truncado transparente', qty: 120, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_09', concept: 'Pajitas cocktail negras papel cortas', qty: 250, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_10', concept: 'Brochetas 19 cm', qty: 400, unit: 'ud', sector: 'Cocina', responsibleId: 'jose', notes: 'Brochetas de 19 cms. Inventario packaging del año pasado.' },
+  { id: 'stock_pkg_11', concept: 'Vasos cartón 200 ml', qty: 50, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_12', concept: 'Platito cuenco (Sodo) negro', qty: 102, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_13', concept: 'Brocheta bambú 15 cm', qty: 200, unit: 'ud', sector: 'Cocina', responsibleId: 'jose', notes: 'Brocheta bambú 15 cms. Inventario packaging del año pasado.' },
+  { id: 'stock_pkg_14', concept: 'Bandejas bambú medianas', qty: 10, unit: 'ud', sector: 'Catering', responsibleId: 'bea', notes: 'Inventario packaging disponible del año pasado.' },
+  { id: 'stock_pkg_15', concept: 'Pinzas bambú', qty: 19, unit: 'ud', sector: 'Cocina', responsibleId: 'jose', notes: 'Inventario packaging disponible del año pasado.' }
 ];
 
 const NEED_STATUSES = [
@@ -49,7 +173,13 @@ const PAYMENT_STATUSES = ['Pendiente', 'Parcial', 'Pagado'];
 const App = {
   db: null,
   currentView: 'dashboard',
+  quickTab: 'aportar', // 'aportar' | 'stock'
+  quickEntryType: 'idea',
+  quickSearchStock: '',
+  quickFilterType: 'ALL',
+  quickToastMessage: '',
   activeUserId: localStorage.getItem(STORAGE_KEYS.ACTIVE_USER) || 'tete',
+  customUserName: localStorage.getItem(STORAGE_KEYS.ACTIVE_USER_CUSTOM_NAME) || '',
   ghToken: localStorage.getItem(STORAGE_KEYS.TOKEN) || '',
   lastSha: localStorage.getItem(STORAGE_KEYS.LAST_SHA) || null,
   hasPendingSync: localStorage.getItem(STORAGE_KEYS.PENDING_SYNC) === 'true',
@@ -91,8 +221,18 @@ const App = {
       await this.loadLocalSeed();
     }
 
+    // Garantizar que el inventario de packaging del año pasado esté cargado
+    this.ensurePackagingStockLoaded();
+
+    // En teléfonos, tablets o en movil.html abrir directamente la vista sencilla para compañeros
+    const isSimplePage = document.body && document.body.dataset.mode === 'movil-only';
+    const isMobileOrTablet = window.innerWidth <= 1024 || location.search.includes('modo=movil');
+    if (isSimplePage || isMobileOrTablet) {
+      this.currentView = 'quick';
+    }
+
     this.updateUserUI();
-    this.render();
+    this.setView(this.currentView);
 
     // Preparar impresión dinámica también cuando el usuario pulsa Ctrl+P / Cmd+P
     window.addEventListener('beforeprint', () => {
@@ -150,9 +290,32 @@ const App = {
       if (res.ok) {
         this.db = await res.json();
         this.saveToLocalCache();
+        return;
       }
     } catch (err) {
-      console.error('Error cargando semilla local:', err);
+      console.warn('Semilla por fetch no disponible (ej. file://), usando base inicial integrada:', err);
+    }
+
+    if (!this.db) {
+      this.db = {
+        meta: {
+          eventTitle: 'Fiesta Empresarial de Navidad 2026',
+          eventSubtitle: 'Celebración Anual en Instalaciones Propias',
+          eventDate: '2026-12-18',
+          location: 'Instalaciones Centrales de la Empresa',
+          estimatedGuests: 85,
+          version: 1,
+          lastUpdated: '2026-11-04T12:08:00Z',
+          lastUpdatedBy: 'TeTe',
+          users: DEFAULT_USERS,
+          sectors: SECTORS
+        },
+        needs: [],
+        tasks: [],
+        schedule: { preEvent: [], eventDay: [] },
+        budgetExtra: [],
+        deletedIds: []
+      };
     }
   },
 
@@ -161,8 +324,49 @@ const App = {
     localStorage.setItem(STORAGE_KEYS.DB_CACHE, JSON.stringify(this.db));
   },
 
+  ensurePackagingStockLoaded() {
+    if (!this.db) return;
+    this.db.needs = this.db.needs || [];
+    const deletedSet = new Set(this.db.deletedIds || []);
+    let added = false;
+
+    for (const s of INITIAL_PACKAGING_STOCK) {
+      if (deletedSet.has(s.id)) continue;
+      const exists = this.db.needs.some((n) => n.id === s.id);
+      if (!exists) {
+        this.db.needs.push({
+          id: s.id,
+          concept: s.concept,
+          category: 'Material y Mobiliario',
+          subcategory: 'Inventario Packaging (Stock)',
+          sector: s.sector,
+          qtyNeeded: s.qty,
+          qtyConfirmed: s.qty,
+          unit: s.unit,
+          originType: 'Propio',
+          providerName: 'Stock Propio (Año pasado)',
+          providerContact: 'Almacén interno',
+          responsibleId: s.responsibleId,
+          status: 'En instalaciones',
+          budgetEstimated: 0,
+          budgetReal: 0,
+          amountPaid: 0,
+          paymentStatus: 'Pagado',
+          notes: s.notes,
+          updatedAt: '2026-11-05T15:55:00Z',
+          updatedBy: 'TeTe'
+        });
+        added = true;
+      }
+    }
+
+    if (added) {
+      this.saveToLocalCache();
+    }
+  },
+
   /* ========================================================================
-     2. SEGURIDAD AES-GCM (DESBLOQUEO CON PIN 509066) Y PERFIL DE USUARIO
+     2. SEGURIDAD AES-GCM (DESBLOQUEO CON PIN DE EQUIPO) Y PERFIL DE USUARIO
      ======================================================================== */
   base64ToBytes(b64) {
     const bin = atob(b64);
@@ -214,18 +418,26 @@ const App = {
     return new TextDecoder().decode(decryptedBuffer).trim();
   },
 
+  getUsers() {
+    const dbUsers = this.db && this.db.meta && Array.isArray(this.db.meta.users) ? this.db.meta.users : [];
+    return dbUsers.length ? dbUsers : DEFAULT_USERS;
+  },
+
   getUserById(userId) {
-    const users = (this.db && this.db.meta && this.db.meta.users) || [];
-    return (
-      users.find((u) => u.id === userId) || {
-        id: 'tete',
-        name: 'TeTe',
-        role: 'Gestión',
-        sector: 'Organización',
-        color: '#2563eb',
-        avatar: 'TT'
-      }
-    );
+    const users = this.getUsers();
+    const found =
+      users.find((u) => u.id === userId) ||
+      DEFAULT_USERS.find((u) => u.id === userId) ||
+      DEFAULT_USERS[0];
+    if (userId === this.activeUserId && this.customUserName && this.customUserName.trim()) {
+      const custom = this.customUserName.trim();
+      return {
+        ...found,
+        name: custom,
+        avatar: custom.slice(0, 2).toUpperCase()
+      };
+    }
+    return found;
   },
 
   updateUserUI() {
@@ -246,13 +458,10 @@ const App = {
     }
   },
 
-  openAuthModal() {
-    const modal = document.getElementById('auth-modal');
+  renderAuthUserGrid() {
     const grid = document.getElementById('auth-user-grid');
-    const statusBox = document.getElementById('auth-status-box');
-    const pinInput = document.getElementById('auth-pin-input');
-
-    const users = (this.db && this.db.meta && this.db.meta.users) || [];
+    if (!grid) return;
+    const users = this.getUsers();
     grid.innerHTML = users
       .map((u) => {
         const isSel = u.id === this.activeUserId;
@@ -263,15 +472,32 @@ const App = {
             onclick="App.selectUserInModal('${u.id}')">
             <span class="user-chip-dot" style="background:${u.color};width:24px;height:24px;">${u.avatar}</span>
             <div style="text-align:left;line-height:1.2;">
-              <div style="font-weight:800;font-size:13px;">${u.name}</div>
-              <div style="font-size:11px;opacity:0.8;">${u.sector}</div>
+              <div style="font-weight:800;font-size:13px;">${u.name}${isSel ? ' ✓' : ''}</div>
+              <div style="font-size:11px;opacity:0.85;">${u.sector}</div>
             </div>
           </button>
         `;
       })
       .join('');
+  },
 
-    pinInput.value = '';
+  openAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    const statusBox = document.getElementById('auth-status-box');
+    const pinInput = document.getElementById('auth-pin-input');
+    const nameInput = document.getElementById('auth-user-name-input');
+
+    this.renderAuthUserGrid();
+
+    if (nameInput) {
+      const currentU = this.getUserById(this.activeUserId);
+      nameInput.value = currentU.name;
+    }
+
+    if (pinInput) {
+      pinInput.value = '';
+    }
+
     if (this.ghToken) {
       statusBox.style.background = '#dcfce7';
       statusBox.style.borderColor = '#86efac';
@@ -281,7 +507,7 @@ const App = {
       statusBox.style.background = '#fef3c7';
       statusBox.style.borderColor = '#fcd34d';
       statusBox.style.color = '#92400e';
-      statusBox.innerHTML = `🔑 Introduce el <strong>PIN de equipo</strong> una sola vez para activar la sincronización en vivo con GitHub en este dispositivo.`;
+      statusBox.innerHTML = `🔑 Selecciona o escribe <strong>quién eres</strong> arriba e introduce el <strong>PIN de equipo</strong> para activar la sincronización en vivo con GitHub.`;
     }
 
     modal.classList.add('open');
@@ -289,9 +515,46 @@ const App = {
 
   selectUserInModal(userId) {
     this.activeUserId = userId;
+    this.customUserName = '';
     localStorage.setItem(STORAGE_KEYS.ACTIVE_USER, userId);
+    localStorage.removeItem(STORAGE_KEYS.ACTIVE_USER_CUSTOM_NAME);
+
+    const nameInput = document.getElementById('auth-user-name-input');
+    const baseUser = this.getUsers().find((u) => u.id === userId) || DEFAULT_USERS[0];
+    if (nameInput && baseUser) {
+      nameInput.value = baseUser.name;
+    }
+
+    this.renderAuthUserGrid();
     this.updateUserUI();
-    this.openAuthModal();
+    this.render();
+  },
+
+  handleUserNameInput(rawVal) {
+    const val = (rawVal || '').trim();
+    const norm = val.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const users = this.getUsers();
+    const matched = users.find(
+      (u) =>
+        u.id.toLowerCase() === norm ||
+        u.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === norm
+    );
+
+    if (matched) {
+      this.activeUserId = matched.id;
+      this.customUserName = '';
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_USER, matched.id);
+      localStorage.removeItem(STORAGE_KEYS.ACTIVE_USER_CUSTOM_NAME);
+    } else if (val) {
+      this.customUserName = val;
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_USER_CUSTOM_NAME, val);
+    } else {
+      this.customUserName = '';
+      localStorage.removeItem(STORAGE_KEYS.ACTIVE_USER_CUSTOM_NAME);
+    }
+
+    this.renderAuthUserGrid();
+    this.updateUserUI();
     this.render();
   },
 
@@ -476,6 +739,14 @@ const App = {
       }
 
       this.render();
+
+      // Si estamos en el ordenador local y hay cambios de código web pendientes de subir a GitHub Pages, publicarlos automáticamente
+      if (location.hostname !== 'visualxet.github.io' && window.NAVIDAD_WEB_BUNDLE) {
+        const pushedVer = localStorage.getItem('navidad2026_pushed_web_version');
+        if (pushedVer !== window.NAVIDAD_WEB_BUNDLE.version) {
+          this.publishWebToGitHub(true);
+        }
+      }
     } catch (err) {
       console.warn('No se pudo conectar con GitHub API:', err);
       this.setSyncIndicator(
@@ -567,6 +838,131 @@ const App = {
     }
   },
 
+  async uploadRepoFile(repoPath, utf8Content, commitMessage) {
+    const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${repoPath}`;
+    const headers = {
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${this.ghToken}`,
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+
+    let existingSha = null;
+    const getRes = await fetch(`${apiUrl}?ref=${GITHUB_CONFIG.branch}&t=${Date.now()}`, {
+      headers,
+      cache: 'no-store'
+    });
+    if (getRes.ok) {
+      const getJson = await getRes.json();
+      existingSha = getJson.sha;
+    }
+
+    const body = {
+      message: commitMessage,
+      content: this.utf8ToBase64(utf8Content),
+      branch: GITHUB_CONFIG.branch
+    };
+    if (existingSha) {
+      body.sha = existingSha;
+    }
+
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!putRes.ok) {
+      throw new Error(`No se pudo subir ${repoPath} (HTTP ${putRes.status})`);
+    }
+    return await putRes.json();
+  },
+
+  async publishWebToGitHub(silent = false) {
+    if (!this.ghToken) {
+      if (!silent) {
+        alert('Primero introduce el PIN del equipo para activar la conexión con GitHub.');
+        this.openAuthModal();
+      }
+      return;
+    }
+
+    const btn = document.getElementById('publish-gh-web-btn');
+    const prevBtnHtml = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Subiendo web a GitHub...';
+    }
+
+    try {
+      const filesMap = (window.NAVIDAD_WEB_BUNDLE && window.NAVIDAD_WEB_BUNDLE.files) || {};
+      const paths = Object.keys(filesMap);
+
+      if (paths.length === 0) {
+        // Intentar leer por fetch si estamos en un servidor local http://
+        const candidatePaths = ['index.html', 'movil.html', 'css/styles.css', 'js/app.js', 'sw.js', 'README.md'];
+        for (const p of candidatePaths) {
+          const r = await fetch(`./${p}?t=${Date.now()}`, { cache: 'no-store' });
+          if (r.ok) {
+            filesMap[p] = await r.text();
+          }
+        }
+      }
+
+      const finalPaths = Object.keys(filesMap);
+      if (finalPaths.length === 0) {
+        throw new Error('No se encontraron archivos locales para publicar.');
+      }
+
+      let count = 0;
+      for (const relPath of finalPaths) {
+        count++;
+        if (btn) {
+          btn.innerHTML = `⏳ Subiendo (${count}/${finalPaths.length}): ${relPath}...`;
+        }
+        await this.uploadRepoFile(
+          relPath,
+          filesMap[relPath],
+          `Actualizar ${relPath} en GitHub Pages (PIN ejemplo genérico, stock y web móvil)`
+        );
+      }
+
+      // También sincronizar la base de datos con el stock
+      await this.pushToGitHub('Sincronizar base de datos e inventario inicial de packaging');
+
+      if (window.NAVIDAD_WEB_BUNDLE && window.NAVIDAD_WEB_BUNDLE.version) {
+        localStorage.setItem('navidad2026_pushed_web_version', window.NAVIDAD_WEB_BUNDLE.version);
+      }
+
+      if (btn) {
+        btn.innerHTML = '✅ ¡Web GitHub Actualizada!';
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = prevBtnHtml;
+        }, 4000);
+      }
+
+      if (!silent) {
+        alert(
+          '✅ ¡Todos los archivos de la web (index.html, movil.html, js/app.js, css/styles.css, sw.js) se han subido a GitHub!\n\nEn unos 30-60 segundos GitHub Pages refrescará la web pública (recuerda pulsar Ctrl+F5 en la web de GitHub si el navegador tenía guardada la versión antigua en caché).'
+        );
+      } else {
+        this.showQuickToast('✅ Web de GitHub actualizada automáticamente con los últimos cambios');
+      }
+    } catch (err) {
+      console.error('Error publicando archivos web en GitHub:', err);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = prevBtnHtml;
+      }
+      if (!silent) {
+        alert('Error al subir archivos a GitHub: ' + err.message);
+      }
+    }
+  },
+
   /* ========================================================================
      4. NAVEGACIÓN, FILTROS TRANSVERSALES Y HELPERS
      ======================================================================== */
@@ -577,7 +973,19 @@ const App = {
       btn.classList.toggle('active', btn.dataset.view === viewName);
     });
 
+    const filterBar = document.getElementById('global-filter-bar');
+    if (filterBar) {
+      filterBar.style.display = viewName === 'quick' ? 'none' : '';
+    }
+
+    const toggleQuickBtn = document.getElementById('toggle-quick-mode-btn');
+    if (toggleQuickBtn) {
+      toggleQuickBtn.innerHTML =
+        viewName === 'quick' ? '💻 Ir a Panel Completo' : '📱 Aportar / Stock Rápido';
+    }
+
     const titles = {
+      quick: '📱 Modo Sencillo · Aportar Ideas, Solicitudes y Stock',
       dashboard: 'Cuadro de Mando General',
       needs: 'Necesidades, Logística y Proveedores',
       tasks: 'Asignación y Seguimiento de Tareas',
@@ -590,6 +998,7 @@ const App = {
     const addBtn = document.getElementById('primary-add-btn');
     if (addBtn) {
       const btnLabels = {
+        quick: '➕ Registro Avanzado',
         dashboard: '➕ Nueva Necesidad',
         needs: '➕ Nueva Necesidad',
         tasks: '➕ Nueva Tarea',
@@ -831,6 +1240,9 @@ const App = {
     if (!container) return;
 
     switch (this.currentView) {
+      case 'quick':
+        container.innerHTML = this.renderQuickMobileView();
+        break;
       case 'dashboard':
         container.innerHTML = this.renderDashboardView();
         break;
@@ -845,6 +1257,9 @@ const App = {
         break;
       case 'budget':
         container.innerHTML = this.renderBudgetView();
+        break;
+      default:
+        container.innerHTML = this.renderQuickMobileView();
         break;
     }
 
@@ -908,6 +1323,502 @@ const App = {
   },
 
   /* ========================================================================
+     5.0. VISTA SENCILLA PARA TELÉFONO Y TABLET (DIVIDIDA EN DOS: APORTAR Y STOCK)
+     ======================================================================== */
+  copyGitHubLink(url = 'https://visualxet.github.io/Navidad2026/') {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('copy-gh-link-btn');
+        if (btn) {
+          const prev = btn.innerHTML;
+          btn.innerHTML = '✅ ¡Link Copiado!';
+          setTimeout(() => {
+            btn.innerHTML = prev;
+          }, 2200);
+        }
+        this.showQuickToast(`✅ Enlace copiado al portapapeles: ${url}`);
+      });
+    } else {
+      prompt('Copia este enlace de la web en GitHub:', url);
+    }
+  },
+
+  setQuickTab(tab) {
+    this.quickTab = tab;
+    this.render();
+  },
+
+  setQuickEntryType(typeKey) {
+    this.quickEntryType = typeKey;
+    this.render();
+    setTimeout(() => {
+      const inp = document.getElementById('quick-concept-input');
+      if (inp) inp.focus();
+    }, 30);
+  },
+
+  setQuickFilterType(val) {
+    this.quickFilterType = val;
+    this.render();
+  },
+
+  setQuickSearchStock(val) {
+    this.quickSearchStock = val;
+    const listBox = document.getElementById('quick-stock-list-container');
+    if (listBox) {
+      listBox.innerHTML = this.renderQuickStockItemsHtml();
+    }
+  },
+
+  showQuickToast(msg) {
+    this.quickToastMessage = msg;
+    this.render();
+    setTimeout(() => {
+      if (this.quickToastMessage === msg) {
+        this.quickToastMessage = '';
+        const toastEl = document.getElementById('quick-toast-banner');
+        if (toastEl) toastEl.style.display = 'none';
+      }
+    }, 3500);
+  },
+
+  async submitQuickEntry(e) {
+    e.preventDefault();
+    const conceptEl = document.getElementById('quick-concept-input');
+    const qtyEl = document.getElementById('quick-qty-input');
+    const notesEl = document.getElementById('quick-notes-input');
+
+    const concept = (conceptEl && conceptEl.value ? conceptEl.value : '').trim();
+    if (!concept) return;
+
+    const qtyVal = Number(qtyEl && qtyEl.value ? qtyEl.value : 1) || 1;
+    const notesVal = (notesEl && notesEl.value ? notesEl.value : '').trim();
+
+    const typeObj =
+      QUICK_ENTRY_TYPES.find((t) => t.key === this.quickEntryType) || QUICK_ENTRY_TYPES[0];
+    const activeUser = this.getUserById(this.activeUserId);
+    const nowIso = new Date().toISOString();
+
+    const newRecord = {
+      id: `quick_${Date.now()}`,
+      concept,
+      category: typeObj.category,
+      subcategory: `${typeObj.icon} ${typeObj.label}`,
+      sector: typeObj.sector,
+      qtyNeeded: qtyVal,
+      qtyConfirmed: typeObj.key === 'idea' ? 1 : 0,
+      unit: typeObj.defaultUnit,
+      originType: typeObj.originType,
+      providerName: `Propuesto por ${activeUser.name}`,
+      providerContact: '',
+      responsibleId: this.activeUserId,
+      status: 'Pendiente',
+      budgetEstimated: 0,
+      budgetReal: 0,
+      amountPaid: 0,
+      paymentStatus: 'Pendiente',
+      notes: notesVal ? `[Apuntado por ${activeUser.name}] ${notesVal}` : `Apuntado por ${activeUser.name} desde móvil/tablet`,
+      updatedAt: nowIso,
+      updatedBy: activeUser.name
+    };
+
+    this.db.needs = this.db.needs || [];
+    this.db.needs.unshift(newRecord);
+
+    await this.commitChange(`Añadido (${typeObj.label}): ${concept}`);
+    this.showQuickToast(`✅ ¡Añadido "${concept}" en ${typeObj.label}!`);
+  },
+
+  async submitQuickStock(e) {
+    e.preventDefault();
+    const conceptEl = document.getElementById('quick-stock-concept');
+    const qtyEl = document.getElementById('quick-stock-qty');
+    const unitEl = document.getElementById('quick-stock-unit');
+    const notesEl = document.getElementById('quick-stock-notes');
+
+    const concept = (conceptEl && conceptEl.value ? conceptEl.value : '').trim();
+    if (!concept) return;
+
+    const qty = Number(qtyEl && qtyEl.value ? qtyEl.value : 1) || 1;
+    const unit = (unitEl && unitEl.value ? unitEl.value : 'ud').trim() || 'ud';
+    const notes = (notesEl && notesEl.value ? notesEl.value : '').trim();
+    const activeUser = this.getUserById(this.activeUserId);
+    const nowIso = new Date().toISOString();
+
+    const newStock = {
+      id: `stock_${Date.now()}`,
+      concept,
+      category: 'Material y Mobiliario',
+      subcategory: 'Inventario Packaging (Stock)',
+      sector: 'Catering',
+      qtyNeeded: qty,
+      qtyConfirmed: qty,
+      unit,
+      originType: 'Propio',
+      providerName: 'Stock Propio (Instalaciones)',
+      providerContact: 'Almacén interno',
+      responsibleId: this.activeUserId,
+      status: 'En instalaciones',
+      budgetEstimated: 0,
+      budgetReal: 0,
+      amountPaid: 0,
+      paymentStatus: 'Pagado',
+      notes: notes || `Añadido a stock por ${activeUser.name}`,
+      updatedAt: nowIso,
+      updatedBy: activeUser.name
+    };
+
+    this.db.needs = this.db.needs || [];
+    this.db.needs.unshift(newStock);
+
+    await this.commitChange(`Nuevo stock: ${concept} (${qty} ${unit})`);
+    this.showQuickToast(`📦 ¡Añadido al stock: ${concept} (${qty} ${unit})!`);
+  },
+
+  async adjustStockQty(id, delta) {
+    const item = (this.db.needs || []).find((n) => n.id === id);
+    if (!item) return;
+    const current = Number(item.qtyConfirmed) || 0;
+    const next = Math.max(0, current + delta);
+    item.qtyConfirmed = next;
+    item.qtyNeeded = next;
+    item.updatedAt = new Date().toISOString();
+    item.updatedBy = this.getUserById(this.activeUserId).name;
+    await this.commitChange(`Stock "${item.concept}": ${next} ${item.unit || 'ud'}`);
+  },
+
+  async quickDeleteItem(id) {
+    const item = (this.db.needs || []).find((n) => n.id === id);
+    if (!item) return;
+    if (!confirm(`¿Seguro que quieres quitar "${item.concept}"?`)) return;
+    this.db.deletedIds = this.db.deletedIds || [];
+    if (!this.db.deletedIds.includes(id)) {
+      this.db.deletedIds.push(id);
+    }
+    this.db.needs = (this.db.needs || []).filter((n) => n.id !== id);
+    await this.commitChange(`Eliminado "${item.concept}"`);
+  },
+
+  getStockItems() {
+    return (this.db.needs || []).filter(
+      (n) =>
+        n.originType === 'Propio' ||
+        (n.subcategory && n.subcategory.toLowerCase().includes('stock')) ||
+        (n.id && n.id.startsWith('stock_'))
+    );
+  },
+
+  renderQuickStockItemsHtml() {
+    const q = (this.quickSearchStock || '').toLowerCase().trim();
+    const stockItems = this.getStockItems().filter((item) => {
+      if (!q) return true;
+      return `${item.concept} ${item.notes || ''} ${item.subcategory || ''}`.toLowerCase().includes(q);
+    });
+
+    if (!stockItems.length) {
+      return `
+        <div style="text-align:center;padding:24px;color:var(--text-light);background:#f8fafc;border-radius:12px;">
+          No se encontraron artículos en stock con esa búsqueda.
+        </div>
+      `;
+    }
+
+    return stockItems
+      .map(
+        (item) => `
+        <div class="quick-stock-card">
+          <div style="flex:1;min-width:160px;">
+            <div style="font-weight:800;font-size:15px;color:var(--text-main);">
+              📦 ${this.escapeHtml(item.concept)}
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
+              ${this.escapeHtml(item.notes || item.subcategory || 'Stock disponible')}
+            </div>
+          </div>
+
+          <div class="quick-stock-stepper">
+            <button type="button" class="stepper-btn" onclick="App.adjustStockQty('${item.id}', -10)" title="Restar 10">-10</button>
+            <button type="button" class="stepper-btn" onclick="App.adjustStockQty('${item.id}', -1)" title="Restar 1">−</button>
+            <div class="stepper-value">
+              <span style="font-size:18px;font-weight:900;color:#166534;">${item.qtyConfirmed}</span>
+              <span style="font-size:11px;color:var(--text-muted);display:block;">${this.escapeHtml(item.unit || 'ud')}</span>
+            </div>
+            <button type="button" class="stepper-btn plus" onclick="App.adjustStockQty('${item.id}', 1)" title="Sumar 1">+</button>
+            <button type="button" class="stepper-btn plus" onclick="App.adjustStockQty('${item.id}', 10)" title="Sumar 10">+10</button>
+            <button type="button" class="btn btn-secondary btn-sm" style="margin-left:4px;padding:6px 8px;" onclick="App.openCrudModal('need', '${item.id}')" title="Editar detalle">✏️</button>
+          </div>
+        </div>
+      `
+      )
+      .join('');
+  },
+
+  renderQuickMobileView() {
+    const users = this.getUsers();
+    const activeUser = this.getUserById(this.activeUserId);
+    const selectedType =
+      QUICK_ENTRY_TYPES.find((t) => t.key === this.quickEntryType) || QUICK_ENTRY_TYPES[0];
+    const stockItems = this.getStockItems();
+    const nonStockItems = (this.db.needs || []).filter(
+      (n) => !stockItems.some((s) => s.id === n.id)
+    );
+
+    const filteredFeed = nonStockItems.filter((item) => {
+      if (this.quickFilterType === 'ALL') return true;
+      const t = QUICK_ENTRY_TYPES.find((x) => x.key === this.quickFilterType);
+      if (!t) return true;
+      return (
+        item.category === t.category ||
+        (item.subcategory && item.subcategory.includes(t.label))
+      );
+    });
+
+    return `
+      <div class="quick-mobile-wrapper">
+        ${
+          this.quickToastMessage
+            ? `<div id="quick-toast-banner" class="quick-toast">${this.escapeHtml(this.quickToastMessage)}</div>`
+            : ''
+        }
+
+        <!-- SELECTOR RÁPIDO DE QUIÉN ERES -->
+        <div class="quick-user-bar">
+          <div style="font-size:12.5px;font-weight:800;color:var(--text-muted);margin-bottom:6px;">
+            👤 ¿Quién eres? (Toca tu nombre o escríbelo):
+          </div>
+          <div class="quick-user-chips">
+            ${users
+              .map((u) => {
+                const isSel = u.id === this.activeUserId && !this.customUserName;
+                return `
+                  <button type="button"
+                    class="quick-user-btn ${isSel ? 'active' : ''}"
+                    style="${isSel ? `background:${u.color};color:#fff;border-color:${u.color};` : ''}"
+                    onclick="App.selectUserInModal('${u.id}')">
+                    <span class="user-chip-dot" style="background:${isSel ? 'rgba(255,255,255,0.25)' : u.color};width:22px;height:22px;">${u.avatar}</span>
+                    <span>${this.escapeHtml(u.name)}${isSel ? ' ✓' : ''}</span>
+                  </button>
+                `;
+              })
+              .join('')}
+            <input
+              type="text"
+              class="form-control"
+              style="max-width:190px;padding:6px 10px;font-size:13px;"
+              placeholder="✍️ Otro compañero..."
+              value="${this.escapeHtml(this.customUserName || '')}"
+              oninput="App.handleUserNameInput(this.value)"
+            />
+          </div>
+        </div>
+
+        <!-- DIVISIÓN EN DOS PARTES GRANDES Y CÓMODAS -->
+        <div class="quick-two-tabs">
+          <button type="button"
+            class="quick-big-tab ${this.quickTab === 'aportar' ? 'active' : ''}"
+            onclick="App.setQuickTab('aportar')">
+            <span style="font-size:22px;">➕</span>
+            <div>
+              <div style="font-weight:900;font-size:15px;">1. Aportar Ideas y Peticiones</div>
+              <div style="font-size:11.5px;opacity:0.85;">Comidas, utensilios, decoración, ideas...</div>
+            </div>
+          </button>
+
+          <button type="button"
+            class="quick-big-tab ${this.quickTab === 'stock' ? 'active' : ''}"
+            onclick="App.setQuickTab('stock')">
+            <span style="font-size:22px;">📦</span>
+            <div>
+              <div style="font-weight:900;font-size:15px;">2. Stock / Material (${stockItems.length})</div>
+              <div style="font-size:11.5px;opacity:0.85;">Inventario packaging año pasado</div>
+            </div>
+          </button>
+        </div>
+
+        ${
+          this.quickTab === 'aportar'
+            ? `
+          <!-- PARTE 1: INCORPORAR FÁCILMENTE IDEAS, SOLICITUDES, COMIDAS, UTENSILIOS, DECORACIÓN, SERVICIOS -->
+          <div class="panel-card" style="padding:18px;border:2px solid #cbd5e1;">
+            <div style="font-weight:900;font-size:16px;margin-bottom:10px;color:var(--text-main);">
+              1️⃣ ¿Qué quieres incorporar a la fiesta?
+            </div>
+
+            <div class="quick-type-grid">
+              ${QUICK_ENTRY_TYPES.map((t) => {
+                const isSel = t.key === this.quickEntryType;
+                return `
+                  <button type="button"
+                    class="quick-type-btn ${isSel ? 'active' : ''}"
+                    onclick="App.setQuickEntryType('${t.key}')">
+                    <span style="font-size:24px;">${t.icon}</span>
+                    <span style="font-weight:800;font-size:13px;">${t.label}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+
+            <form onsubmit="App.submitQuickEntry(event)" style="margin-top:16px;display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <label style="font-weight:800;font-size:13.5px;color:var(--text-main);display:block;margin-bottom:5px;">
+                  2️⃣ Escribe tu ${selectedType.label.toLowerCase()} *
+                </label>
+                <input
+                  type="text"
+                  id="quick-concept-input"
+                  class="form-control"
+                  style="font-size:16px;padding:13px 14px;font-weight:600;border-width:2px;"
+                  required
+                  placeholder="${this.escapeHtml(selectedType.placeholder)}"
+                />
+              </div>
+
+              <div style="display:grid;grid-template-columns:120px 1fr;gap:10px;">
+                <div>
+                  <label style="font-weight:700;font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;">
+                    Cantidad
+                  </label>
+                  <input
+                    type="number"
+                    step="any"
+                    id="quick-qty-input"
+                    class="form-control"
+                    style="font-size:15px;padding:10px;font-weight:700;"
+                    value="1"
+                  />
+                </div>
+                <div>
+                  <label style="font-weight:700;font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;">
+                    Detalle o comentario (opcional)
+                  </label>
+                  <input
+                    type="text"
+                    id="quick-notes-input"
+                    class="form-control"
+                    style="font-size:14px;padding:10px;"
+                    placeholder="Dónde comprarlo, para qué momento, idea..."
+                  />
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="padding:14px;font-size:16px;font-weight:900;border-radius:12px;box-shadow:0 4px 14px rgba(153,27,27,0.3);">
+                ➕ INCORPORAR ${selectedType.label.toUpperCase()} (como ${this.escapeHtml(activeUser.name)})
+              </button>
+            </form>
+          </div>
+
+          <!-- LISTADO CLARO DE LO INCORPORADO POR EL EQUIPO -->
+          <div class="panel-card" style="padding:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+              <div style="font-weight:900;font-size:15px;">
+                📋 Solicitudes, Ideas, Comidas y Recursos Apuntados (${filteredFeed.length})
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button type="button" class="pill-btn ${this.quickFilterType === 'ALL' ? 'active' : ''}" onclick="App.setQuickFilterType('ALL')">Todos</button>
+                ${QUICK_ENTRY_TYPES.map(
+                  (t) => `
+                  <button type="button" class="pill-btn ${this.quickFilterType === t.key ? 'active' : ''}" onclick="App.setQuickFilterType('${t.key}')">
+                    ${t.icon} ${t.label.split('/')[0].trim()}
+                  </button>
+                `
+                ).join('')}
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${filteredFeed
+                .map(
+                  (item) => `
+                <div class="quick-feed-item">
+                  <div style="flex:1;min-width:180px;">
+                    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px;">
+                      <span class="badge" style="background:#f1f5f9;color:#0f172a;border:1px solid #cbd5e1;">
+                        ${this.escapeHtml(item.subcategory || item.category)}
+                      </span>
+                      ${this.renderSectorBadge(item.sector)}
+                      ${this.renderUserChip(item.responsibleId)}
+                    </div>
+                    <div style="font-weight:800;font-size:15px;color:var(--text-main);">
+                      ${this.escapeHtml(item.concept)}
+                      ${
+                        Number(item.qtyNeeded) > 1
+                          ? `<span style="color:var(--brand-primary);font-weight:900;"> · ${item.qtyNeeded} ${this.escapeHtml(item.unit || 'uds')}</span>`
+                          : ''
+                      }
+                    </div>
+                    ${
+                      item.notes
+                        ? `<div style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">💬 ${this.escapeHtml(item.notes)}</div>`
+                        : ''
+                    }
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="App.openCrudModal('need', '${item.id}')">✏️</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="App.quickDeleteItem('${item.id}')">🗑️</button>
+                  </div>
+                </div>
+              `
+                )
+                .join('')}
+            </div>
+          </div>
+        `
+            : `
+          <!-- PARTE 2: INVENTARIO Y STOCK DISPONIBLE (MATERIAL DEL AÑO PASADO E INSTALACIONES) -->
+          <div class="panel-card" style="padding:18px;border:2px solid #86efac;background:#f0fdf4;">
+            <div style="font-weight:900;font-size:15.5px;color:#166534;margin-bottom:8px;">
+              ➕ Añadir Nuevo Material / Utensilio a nuestro Stock
+            </div>
+            <form onsubmit="App.submitQuickStock(event)" style="display:grid;grid-template-columns:1fr 90px 90px auto;gap:8px;align-items:end;" class="quick-stock-form-grid">
+              <div>
+                <label style="font-size:11.5px;font-weight:700;color:#166534;">Material / Utensilio en almacén *</label>
+                <input type="text" id="quick-stock-concept" class="form-control" required placeholder="Ej. Servilletas negras, Copas plástico, Manteles..." />
+              </div>
+              <div>
+                <label style="font-size:11.5px;font-weight:700;color:#166534;">Cantidad *</label>
+                <input type="number" step="any" id="quick-stock-qty" class="form-control" required value="50" />
+              </div>
+              <div>
+                <label style="font-size:11.5px;font-weight:700;color:#166534;">Unidad</label>
+                <input type="text" id="quick-stock-unit" class="form-control" value="ud" placeholder="ud, cajas..." />
+              </div>
+              <button type="submit" class="btn btn-primary" style="background:#16a34a;padding:10px 16px;font-weight:800;">
+                ➕ Guardar Stock
+              </button>
+            </form>
+          </div>
+
+          <div class="panel-card" style="padding:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+              <div>
+                <div style="font-weight:900;font-size:16px;">
+                  📦 Inventario de Packaging y Material Disponible (${stockItems.length} artículos)
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);">
+                  Usa los botones <strong>− / +</strong> para actualizar las unidades directamente desde el móvil o tablet.
+                </div>
+              </div>
+              <input
+                type="search"
+                class="search-input"
+                style="min-width:240px;"
+                placeholder="🔍 Buscar en stock (bambú, vasos, cuchara...)"
+                value="${this.escapeHtml(this.quickSearchStock)}"
+                oninput="App.setQuickSearchStock(this.value)"
+              />
+            </div>
+
+            <div id="quick-stock-list-container" style="display:flex;flex-direction:column;gap:8px;">
+              ${this.renderQuickStockItemsHtml()}
+            </div>
+          </div>
+        `
+        }
+      </div>
+    `;
+  },
+
+  /* ========================================================================
      5.1. VISTA 1: CUADRO DE MANDO GENERAL (DASHBOARD)
      ======================================================================== */
   renderDashboardView() {
@@ -962,7 +1873,7 @@ const App = {
     }).join('');
 
     // Resumen por los 4 Organizadores (TeTe, Bea, Leli, Jose)
-    const users = (this.db.meta && this.db.meta.users) || [];
+    const users = this.getUsers();
     const userCards = users
       .map((u) => {
         const uNeeds = (this.db.needs || []).filter((n) => n.responsibleId === u.id);
@@ -1711,7 +2622,7 @@ const App = {
     const delBtn = document.getElementById('crud-delete-btn');
 
     delBtn.style.display = id ? 'inline-flex' : 'none';
-    const users = (this.db.meta && this.db.meta.users) || [];
+    const users = this.getUsers();
     const defaultSector = this.filters.sector !== 'ALL' ? this.filters.sector : this.getUserById(this.activeUserId).sector;
 
     if (type === 'need') {
