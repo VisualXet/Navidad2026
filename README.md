@@ -3,9 +3,10 @@
 Aplicación Web Progresiva (PWA) multiplataforma para la planificación, logística, catering, cocina, asignación de tareas, cronograma doble y control de presupuesto de la **Fiesta Empresarial de Navidad 2026** (Viernes, 18 de diciembre de 2026).
 
 ## 🔗 Acceso en Producción (GitHub Pages)
-- **URL Web / PWA:** `https://visualxet.github.io/Navidad2026/`
+- **URL Panel Completo (PC / Gestión):** `https://visualxet.github.io/Navidad2026/`
+- **URL Sencilla para Compañeros (Teléfono / Tablet):** `https://visualxet.github.io/Navidad2026/movil.html`
 - **Repositorio:** `https://github.com/VisualXet/Navidad2026`
-- **Clave / PIN de Sincronización del Equipo:** `509066`
+- **Clave / PIN de Sincronización del Equipo:** *(Configurado por el equipo organizador)*
 
 ## 👥 Equipo Organizador (4 Usuarios Concurrentes)
 1. **TeTe** — *Gestión y Organización* (`Organización`)
