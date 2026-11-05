@@ -1,7 +1,8 @@
-const CACHE_NAME = 'navidad2026-pwa-v1';
+const CACHE_NAME = 'navidad2026-pwa-v3';
 const STATIC_ASSETS = [
   './',
   './index.html',
+  './movil.html',
   './css/styles.css',
   './js/app.js',
   './manifest.json',
