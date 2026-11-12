@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 20,
-    "lastUpdated": "2026-11-12T13:05:17.431Z",
+    "version": 21,
+    "lastUpdated": "2026-11-12T13:06:15.767Z",
     "lastUpdatedBy": "Bea",
     "users": [
       {
@@ -311,7 +311,7 @@
       "amountPaid": 0,
       "paymentStatus": "Pendiente",
       "notes": "Turno de 12:30h a 21:30h. Uniforme negro completo.",
-      "updatedAt": "2026-11-04T12:08:00Z",
+      "updatedAt": "2026-11-12T13:06:15.767Z",
       "updatedBy": "Bea"
     },
     {
