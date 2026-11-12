@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 14,
-    "lastUpdated": "2026-11-12T12:23:07.252Z",
+    "version": 15,
+    "lastUpdated": "2026-11-12T12:23:56.317Z",
     "lastUpdatedBy": "TeTe",
     "users": [
       {
@@ -333,7 +333,7 @@
       "amountPaid": 0,
       "paymentStatus": "Pendiente",
       "notes": "[Apuntado por TeTe] 2 pases de 45 min (17:00h en cóctel y 21:00h apertura baile con DJ).",
-      "updatedAt": "2026-11-12T12:23:07.252Z",
+      "updatedAt": "2026-11-12T12:23:56.317Z",
       "updatedBy": "TeTe"
     },
     {
