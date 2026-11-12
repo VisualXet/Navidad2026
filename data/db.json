@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 7,
-    "lastUpdated": "2026-11-05T14:51:36.301Z",
+    "version": 8,
+    "lastUpdated": "2026-11-12T12:04:37.146Z",
     "lastUpdatedBy": "TeTe",
     "users": [
       {
@@ -50,6 +50,28 @@
     ]
   },
   "needs": [
+    {
+      "id": "quick_1794485077146",
+      "concept": "Grupo TUERCA",
+      "category": "Servicios y Personal",
+      "subcategory": "🚚 Servicio / Música",
+      "sector": "Organización",
+      "qtyNeeded": 1,
+      "qtyConfirmed": 0,
+      "unit": "servicio",
+      "originType": "Contratado",
+      "providerName": "Propuesto por TeTe",
+      "providerContact": "",
+      "responsibleId": "tete",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "[Apuntado por TeTe] 691048787",
+      "updatedAt": "2026-11-12T12:04:37.145Z",
+      "updatedBy": "TeTe"
+    },
     {
       "id": "need_01",
       "concept": "Jamón Ibérico de Bellota (Corte en vivo + Emplatado)",
