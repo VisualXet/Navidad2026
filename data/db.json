@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 15,
-    "lastUpdated": "2026-11-12T12:23:56.317Z",
+    "version": 16,
+    "lastUpdated": "2026-11-12T12:25:30.627Z",
     "lastUpdatedBy": "TeTe",
     "users": [
       {
@@ -353,9 +353,9 @@
       "budgetEstimated": 0,
       "budgetReal": 0,
       "amountPaid": 0,
-      "paymentStatus": "Pendiente",
+      "paymentStatus": "Pagado",
       "notes": "Música ambiental en comida y sesión fiesta de 14:30h a 24:00h.",
-      "updatedAt": "2026-11-05T14:48:54.836Z",
+      "updatedAt": "2026-11-12T12:25:30.627Z",
       "updatedBy": "TeTe"
     },
     {
