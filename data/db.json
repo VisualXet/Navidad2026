@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 11,
-    "lastUpdated": "2026-11-12T12:09:55.325Z",
+    "version": 12,
+    "lastUpdated": "2026-11-12T12:22:21.612Z",
     "lastUpdatedBy": "TeTe",
     "users": [
       {
@@ -68,8 +68,8 @@
       "budgetReal": 0,
       "amountPaid": 0,
       "paymentStatus": "Pendiente",
-      "notes": "[Apuntado por TeTe] 691048787",
-      "updatedAt": "2026-11-12T12:05:56.999Z",
+      "notes": "[Apuntado por TeTe]",
+      "updatedAt": "2026-11-12T12:22:21.612Z",
       "updatedBy": "TeTe"
     },
     {
