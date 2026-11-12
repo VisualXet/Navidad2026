@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 19,
-    "lastUpdated": "2026-11-12T13:04:40.913Z",
+    "version": 20,
+    "lastUpdated": "2026-11-12T13:05:17.431Z",
     "lastUpdatedBy": "Bea",
     "users": [
       {
@@ -50,6 +50,28 @@
     ]
   },
   "needs": [
+    {
+      "id": "quick_1794488717431",
+      "concept": "Pieza jamón ibérico PDTE",
+      "category": "Alimentación y Bebidas",
+      "subcategory": "🍽️ Comida / Bebida",
+      "sector": "Cocina",
+      "qtyNeeded": 1,
+      "qtyConfirmed": 0,
+      "unit": "uds",
+      "originType": "Contratado",
+      "providerName": "Propuesto por Bea",
+      "providerContact": "",
+      "responsibleId": "bea",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "Apuntado por Bea desde móvil/tablet",
+      "updatedAt": "2026-11-12T13:05:17.431Z",
+      "updatedBy": "Bea"
+    },
     {
       "id": "quick_1794488535925",
       "concept": "Grupo música cóctel TUERCA. De 14:00 a 15:30",
