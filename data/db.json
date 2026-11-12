@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 18,
-    "lastUpdated": "2026-11-12T13:03:56.267Z",
+    "version": 19,
+    "lastUpdated": "2026-11-12T13:04:40.913Z",
     "lastUpdatedBy": "Bea",
     "users": [
       {
@@ -74,7 +74,7 @@
     },
     {
       "id": "need_01",
-      "concept": "Jamón Ibérico de Bellota (Corte en vivo + Emplatado)",
+      "concept": "Maestro cortador jamón",
       "category": "Alimentación y Bebidas",
       "subcategory": "Aperitivos y Entrantes",
       "sector": "Cocina",
@@ -85,14 +85,14 @@
       "providerName": "BEA",
       "providerContact": "678678940",
       "responsibleId": "bea",
-      "status": "Pendiente",
+      "status": "Confirmado",
       "budgetEstimated": 200,
       "budgetReal": 0,
       "amountPaid": 0,
       "paymentStatus": "Pendiente",
       "notes": "",
-      "updatedAt": "2026-11-12T12:07:12.118Z",
-      "updatedBy": "TeTe"
+      "updatedAt": "2026-11-12T13:04:40.913Z",
+      "updatedBy": "Bea"
     },
     {
       "id": "need_02",
