@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 17,
-    "lastUpdated": "2026-11-12T13:02:15.925Z",
+    "version": 18,
+    "lastUpdated": "2026-11-12T13:03:56.267Z",
     "lastUpdatedBy": "Bea",
     "users": [
       {
@@ -52,12 +52,12 @@
   "needs": [
     {
       "id": "quick_1794488535925",
-      "concept": "Grupo música cóctel",
-      "category": "Servicios y Personal",
+      "concept": "Grupo música cóctel TUERCA. De 14:00 a 15:30",
+      "category": "Espectáculo y Ambientación",
       "subcategory": "🚚 Servicio / Música",
       "sector": "Organización",
       "qtyNeeded": 1,
-      "qtyConfirmed": 0,
+      "qtyConfirmed": 1,
       "unit": "servicio",
       "originType": "Contratado",
       "providerName": "Propuesto por Bea",
@@ -69,7 +69,7 @@
       "amountPaid": 0,
       "paymentStatus": "Pendiente",
       "notes": "Apuntado por Bea desde móvil/tablet",
-      "updatedAt": "2026-11-12T13:02:15.924Z",
+      "updatedAt": "2026-11-12T13:03:56.266Z",
       "updatedBy": "Bea"
     },
     {
