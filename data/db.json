@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 8,
-    "lastUpdated": "2026-11-12T12:04:37.146Z",
+    "version": 9,
+    "lastUpdated": "2026-11-12T12:05:56.999Z",
     "lastUpdatedBy": "TeTe",
     "users": [
       {
@@ -53,7 +53,7 @@
     {
       "id": "quick_1794485077146",
       "concept": "Grupo TUERCA",
-      "category": "Servicios y Personal",
+      "category": "Espectáculo y Ambientación",
       "subcategory": "🚚 Servicio / Música",
       "sector": "Organización",
       "qtyNeeded": 1,
@@ -61,15 +61,15 @@
       "unit": "servicio",
       "originType": "Contratado",
       "providerName": "Propuesto por TeTe",
-      "providerContact": "",
+      "providerContact": "691048787",
       "responsibleId": "tete",
       "status": "Pendiente",
-      "budgetEstimated": 0,
+      "budgetEstimated": 580,
       "budgetReal": 0,
       "amountPaid": 0,
       "paymentStatus": "Pendiente",
       "notes": "[Apuntado por TeTe] 691048787",
-      "updatedAt": "2026-11-12T12:04:37.145Z",
+      "updatedAt": "2026-11-12T12:05:56.999Z",
       "updatedBy": "TeTe"
     },
     {
