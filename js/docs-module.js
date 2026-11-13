@@ -7,10 +7,10 @@
  *   y Generador de Resumen de Facturas (extracción directa PDF.js + OCR en español Tesseract.js).
  */
 
-const DOC_TYPES = ['Factura', 'Presupuesto', 'Albarán', 'Menú / Catálogo', 'Otro Documento'];
-const DOC_YEARS = ['2025', '2024', '2023', '2022', '2026', ' Histórico'];
+var DOC_TYPES = ['Factura', 'Presupuesto', 'Albarán', 'Menú / Catálogo', 'Otro Documento'];
+var DOC_YEARS = ['2025', '2024', '2023', '2022', '2026', 'Histórico'];
 
-const DocsModule = {
+var DocsModule = {
   idbName: 'navidad2026_docs_idb',
   idbStore: 'files',
   pdfJsLoaded: false,
@@ -538,7 +538,40 @@ const DocsModule = {
   /* ========================================================================
      4. MODAL PARA SUBIR NUEVO DOCUMENTO / FACTURA
      ======================================================================== */
+  ensureModalsInDom() {
+    if (typeof document === 'undefined' || !document.body) return;
+    if (!document.getElementById('doc-upload-modal')) {
+      const up = document.createElement('div');
+      up.className = 'modal-backdrop';
+      up.id = 'doc-upload-modal';
+      up.innerHTML = `
+        <div class="modal-box" style="max-width:680px;">
+          <div class="modal-header">
+            <h3 class="modal-title">📤 Subir Factura o Documento (Solo Consulta)</h3>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="DocsModule.closeUploadModal()">✕</button>
+          </div>
+          <form onsubmit="DocsModule.saveUploadedDocument(event)">
+            <div class="modal-body" id="doc-upload-modal-body"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" onclick="DocsModule.closeUploadModal()">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="doc-upload-submit-btn">💾 Archivar y Consultar</button>
+            </div>
+          </form>
+        </div>
+      `;
+      document.body.appendChild(up);
+    }
+    if (!document.getElementById('doc-viewer-modal')) {
+      const vw = document.createElement('div');
+      vw.className = 'modal-backdrop';
+      vw.id = 'doc-viewer-modal';
+      vw.innerHTML = `<div class="doc-viewer-shell" id="doc-viewer-modal-content"></div>`;
+      document.body.appendChild(vw);
+    }
+  },
+
   openUploadModal() {
+    this.ensureModalsInDom();
     this.pendingUpload = {
       file: null,
       processedBlob: null,
@@ -1032,6 +1065,7 @@ const DocsModule = {
      6. VISUALIZADOR INTERACTIVO CON ZOOM, ROTACIÓN Y DESPLAZAMIENTO H / V
      ======================================================================== */
   async openViewer(docId) {
+    this.ensureModalsInDom();
     const doc = (App.db.documents || []).find((d) => d.id === docId);
     if (!doc) return;
 
@@ -1503,6 +1537,12 @@ const DocsModule = {
     }
   }
 };
+
+if (typeof window !== 'undefined') {
+  window.DocsModule = DocsModule;
+  window.DOC_TYPES = DOC_TYPES;
+  window.DOC_YEARS = DOC_YEARS;
+}
 
 // Atajos de teclado mientras el visor está abierto (+ / - zoom, flechas desplazar, R rotar, Esc cerrar)
 document.addEventListener('keydown', (e) => {
