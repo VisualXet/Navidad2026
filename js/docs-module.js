@@ -895,34 +895,58 @@ const DocsModule = {
     `;
   },
 
-  renderDocsView() {
+  renderDocsView(isEmbeddedMobile = false) {
     const docs = this.getFilteredDocuments();
     const allDocs = (App.db && App.db.documents) || [];
     const totalSizeBytes = allDocs.reduce((acc, d) => acc + (Number(d.fileSize) || 0), 0);
     const repoPct = Math.min(100, (totalSizeBytes / (1024 * 1024 * 1024)) * 100);
 
     return `
-      <!-- Banner Informativo de Consulta Histórica e Impacto GitHub -->
+      <!-- Banner Informativo y Buscador Rápido (Especialmente útil en Móvil / Tablet) -->
       <div class="panel-card" style="margin-bottom:16px;padding:14px 18px;border-left:5px solid #2563eb;">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
           <div>
             <div style="font-weight:800;font-size:15px;color:var(--text-main);">
-              📂 Archivo Histórico de Facturas, Presupuestos y Proveedores (Solo Consulta)
+              📂 Archivo de Facturas y Documentos (Solo Consulta)
             </div>
             <div style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">
-              Consulta cantidades, precios unitarios y proveedores de otros años sin alterar el presupuesto actual de 2026.
-              Usa el buscador superior para localizar cualquier producto (ej. <em>jamón, vino, mesas, sonido</em>) dentro de los resúmenes.
+              Consulta cantidades, precios y proveedores de otros años con resumen y visor interactivo.
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <div style="font-size:12px;padding:6px 10px;border-radius:8px;background:var(--bg-subtle);border:1px solid var(--border-color);">
-              ☁️ Uso en GitHub: <strong>${this.formatBytes(totalSizeBytes)}</strong> / 1 GB (${repoPct.toFixed(2)}%) · <strong>${allDocs.length}</strong> docs
-            </div>
+            ${
+              !isEmbeddedMobile
+                ? `<div style="font-size:12px;padding:6px 10px;border-radius:8px;background:var(--bg-subtle);border:1px solid var(--border-color);">
+              ☁️ GitHub: <strong>${this.formatBytes(totalSizeBytes)}</strong> / 1 GB (${repoPct.toFixed(2)}%) · <strong>${allDocs.length}</strong> docs
+            </div>`
+                : ''
+            }
             <button class="btn btn-primary" onclick="DocsModule.openUploadModal()">
-              📤 Subir Factura / Documento
+              📤 Subir Factura / Foto
             </button>
           </div>
         </div>
+
+        ${
+          isEmbeddedMobile
+            ? `
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-color);">
+            <input
+              type="search"
+              class="search-input"
+              style="flex:1;min-width:190px;"
+              placeholder="🔍 Buscar producto, proveedor o nota..."
+              value="${App.escapeHtml(App.filters.search || '')}"
+              oninput="App.setFilter('search', this.value)"
+            />
+            <select class="select-filter" onchange="DocsModule.setDocSubfilter('year', this.value)">
+              <option value="ALL" ${this.docFilters.year === 'ALL' ? 'selected' : ''}>📅 Todos los Años</option>
+              ${DOC_YEARS.map((y) => `<option value="${y}" ${this.docFilters.year === y ? 'selected' : ''}>📅 ${y}</option>`).join('')}
+            </select>
+          </div>
+        `
+            : ''
+        }
       </div>
 
       ${
@@ -1022,6 +1046,7 @@ const DocsModule = {
       rotation: 0,
       panX: 0,
       panY: 0,
+      sidePanelOpen: window.innerWidth > 900,
       isDragging: false,
       isSummarizing: false,
       ocrStatusText: ''
@@ -1510,3 +1535,4 @@ document.addEventListener('keydown', (e) => {
     DocsModule.panBy(0, -60);
   }
 });
+
