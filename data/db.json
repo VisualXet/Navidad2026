@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 82,
-    "lastUpdated": "2026-11-13T12:28:40.530Z",
+    "version": 83,
+    "lastUpdated": "2026-11-13T12:29:07.578Z",
     "lastUpdatedBy": "Jose",
     "users": [
       {
@@ -50,6 +50,28 @@
     ]
   },
   "needs": [
+    {
+      "id": "quick_1794572947578",
+      "concept": "Quesos especiales",
+      "category": "Alimentación y Bebidas",
+      "subcategory": "🍽️ Comida / Bebida",
+      "sector": "Cocina",
+      "qtyNeeded": 4,
+      "qtyConfirmed": 0,
+      "unit": "uds",
+      "originType": "Contratado",
+      "providerName": "Propuesto por Jose",
+      "providerContact": "",
+      "responsibleId": "jose",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "[Apuntado por Jose] Makro",
+      "updatedAt": "2026-11-13T12:29:07.578Z",
+      "updatedBy": "Jose"
+    },
     {
       "id": "quick_1794572920530",
       "concept": "Aceitunas",
