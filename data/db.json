@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 63,
-    "lastUpdated": "2026-11-13T12:21:02.407Z",
+    "version": 64,
+    "lastUpdated": "2026-11-13T12:21:41.584Z",
     "lastUpdatedBy": "Jose",
     "users": [
       {
@@ -50,6 +50,28 @@
     ]
   },
   "needs": [
+    {
+      "id": "quick_1794572501584",
+      "concept": "Queso cabra semi",
+      "category": "Alimentación y Bebidas",
+      "subcategory": "🍽️ Comida / Bebida",
+      "sector": "Cocina",
+      "qtyNeeded": 3,
+      "qtyConfirmed": 0,
+      "unit": "uds",
+      "originType": "Contratado",
+      "providerName": "Propuesto por Jose",
+      "providerContact": "",
+      "responsibleId": "jose",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "[Apuntado por Jose] Las 3 RRR",
+      "updatedAt": "2026-11-13T12:21:41.584Z",
+      "updatedBy": "Jose"
+    },
     {
       "id": "quick_1794572409299",
       "concept": "Queso cabra curado",
