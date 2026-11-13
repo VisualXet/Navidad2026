@@ -242,24 +242,36 @@ const App = {
       this.buildPrintDocument();
     });
 
-    // Sincronizar con GitHub si hay token disponible; si no, mostrar modal de bienvenida/PIN
+    // Sincronizar con GitHub si hay token disponible; si no, descargar última versión en modo lectura y pedir PIN si falta
     if (this.ghToken) {
-      await this.syncNow(false);
+      await this.syncNow(true);
     } else {
-      this.setSyncIndicator('pending', 'Activar PIN Sync');
+      await this.pullRemoteReadOnly();
+      this.setSyncIndicator(
+        this.hasPendingSync ? 'pending' : 'pending',
+        this.hasPendingSync ? 'Guardado local (Falta PIN)' : 'Activar PIN Sync'
+      );
       setTimeout(() => this.openAuthModal(), 400);
     }
 
     // Auto-refresco al volver a la pestaña o cada 45 segundos
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && this.ghToken && !this.isSyncing) {
-        this.syncNow(false);
+      if (document.visibilityState === 'visible' && !this.isSyncing) {
+        if (this.ghToken) {
+          this.syncNow(true);
+        } else {
+          this.pullRemoteReadOnly();
+        }
       }
     });
 
     setInterval(() => {
-      if (this.ghToken && !this.isSyncing && document.visibilityState === 'visible') {
-        this.syncNow(false);
+      if (!this.isSyncing && document.visibilityState === 'visible') {
+        if (this.ghToken) {
+          this.syncNow(true);
+        } else {
+          this.pullRemoteReadOnly();
+        }
       }
     }, 45000);
   },
@@ -736,6 +748,31 @@ const App = {
     return { remoteDb, sha: payload.sha };
   },
 
+  async pullRemoteReadOnly() {
+    try {
+      let remoteDb = null;
+      try {
+        const remote = await this.fetchRemoteDb();
+        remoteDb = remote.remoteDb;
+        this.lastSha = remote.sha;
+      } catch (apiErr) {
+        const res = await fetch(`./data/db.json?t=${Date.now()}`, { cache: 'no-store' });
+        if (res.ok) {
+          remoteDb = await res.json();
+        }
+      }
+      if (remoteDb) {
+        this.db = this.hasPendingSync
+          ? this.smartMergeDatabases(this.db, remoteDb)
+          : this.smartMergeDatabases(remoteDb, this.db);
+        this.saveToLocalCache();
+        this.render();
+      }
+    } catch (e) {
+      // Ignorar fallos silenciosos de lectura offline
+    }
+  },
+
   async syncNow(pushIfPending = true) {
     if (!this.ghToken) {
       this.openAuthModal();
@@ -753,13 +790,31 @@ const App = {
 
       if (this.hasPendingSync) {
         this.db = this.smartMergeDatabases(this.db, remoteDb);
-        this.saveToLocalCache();
-        if (pushIfPending) {
-          await this.pushToGitHub('Sincronización automática de cambios pendientes');
-        }
       } else {
         this.db = this.smartMergeDatabases(remoteDb, this.db);
-        this.saveToLocalCache();
+      }
+      this.saveToLocalCache();
+
+      // Si había facturas o fotos subidas localmente antes de poner el PIN (ej. Leli), subir sus PDFs ahora a GitHub
+      let blobsUploaded = false;
+      if (pushIfPending && window.DocsModule && typeof DocsModule.syncPendingLocalBlobs === 'function') {
+        blobsUploaded = await DocsModule.syncPendingLocalBlobs();
+        if (blobsUploaded) {
+          const latest = await this.fetchRemoteDb();
+          this.lastSha = latest.sha;
+          localStorage.setItem(STORAGE_KEYS.LAST_SHA, latest.sha);
+          this.db = this.smartMergeDatabases(this.db, latest.remoteDb);
+          this.saveToLocalCache();
+        }
+      }
+
+      if ((this.hasPendingSync && pushIfPending) || blobsUploaded) {
+        await this.pushToGitHub(
+          blobsUploaded
+            ? 'Sincronización automática de facturas y cambios pendientes'
+            : 'Sincronización automática de cambios pendientes'
+        );
+      } else {
         this.setSyncIndicator('synced', 'Sincronizado');
       }
 
