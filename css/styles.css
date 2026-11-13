@@ -1162,6 +1162,200 @@ body.dark-theme {
 }
 
 /* ==========================================================================
+   ARCHIVO DE FACTURAS Y VISUALIZADOR CON ZOOM, ROTACIÓN Y DESPLAZAMIENTO H/V
+   ========================================================================== */
+.docs-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+}
+
+.doc-archive-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.doc-archive-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.doc-summary-preview {
+  margin-top: 6px;
+  padding: 10px 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: pre-line;
+  max-height: 118px;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.doc-dropzone {
+  border: 2px dashed var(--border-strong);
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+  background: var(--bg-subtle);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.doc-dropzone:hover,
+.doc-dropzone.dragover {
+  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.doc-viewer-shell {
+  width: 96vw;
+  height: 94vh;
+  max-width: 1720px;
+  background: var(--bg-surface);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border-strong);
+}
+
+.doc-viewer-toolbar {
+  background: #0f172a;
+  color: #fff;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #334155;
+}
+
+.doc-viewer-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.viewer-pill-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 4px 8px;
+  border-radius: 10px;
+}
+
+.viewer-ctrl-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.viewer-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.doc-viewer-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.doc-viewer-main-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #111827;
+}
+
+.doc-viewer-stage {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.doc-viewer-stage.dragging {
+  cursor: grabbing;
+}
+
+.doc-viewer-stage-inner {
+  transform-origin: center center;
+  transition: transform 0.04s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doc-viewer-media {
+  max-width: 90%;
+  max-height: 80vh;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
+  background: #ffffff;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.doc-viewer-panbars {
+  background: #1e293b;
+  border-top: 1px solid #334155;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.doc-viewer-sidebar {
+  width: 380px;
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border-color);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+@media (max-width: 960px) {
+  .doc-viewer-body {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .doc-viewer-stage {
+    min-height: 52vh;
+  }
+  .doc-viewer-sidebar {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--border-color);
+  }
+}
+
+/* ==========================================================================
    MOTOR DE IMPRESIÓN INTELIGENTE (@media print - A4 BLANCO Y NEGRO LIMPIO)
    ========================================================================== */
 @media print {
