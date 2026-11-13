@@ -51,28 +51,6 @@
   },
   "needs": [
     {
-      "id": "quick_1794488717431",
-      "concept": "Pieza jamón ibérico PDTE",
-      "category": "Alimentación y Bebidas",
-      "subcategory": "🍽️ Comida / Bebida",
-      "sector": "Cocina",
-      "qtyNeeded": 1,
-      "qtyConfirmed": 0,
-      "unit": "uds",
-      "originType": "Contratado",
-      "providerName": "Propuesto por Bea",
-      "providerContact": "",
-      "responsibleId": "bea",
-      "status": "Pendiente",
-      "budgetEstimated": 0,
-      "budgetReal": 0,
-      "amountPaid": 0,
-      "paymentStatus": "Pendiente",
-      "notes": "Apuntado por Bea desde móvil/tablet",
-      "updatedAt": "2026-11-12T13:05:17.431Z",
-      "updatedBy": "Bea"
-    },
-    {
       "id": "need_01",
       "concept": "Maestro cortador jamón",
       "category": "Alimentación y Bebidas",
@@ -733,6 +711,28 @@
       "updatedBy": "TeTe"
     },
     {
+      "id": "quick_1794488717431",
+      "concept": "Pieza jamón ibérico PDTE",
+      "category": "Alimentación y Bebidas",
+      "subcategory": "🍽️ Comida / Bebida",
+      "sector": "Cocina",
+      "qtyNeeded": 1,
+      "qtyConfirmed": 0,
+      "unit": "uds",
+      "originType": "Contratado",
+      "providerName": "Propuesto por Bea",
+      "providerContact": "",
+      "responsibleId": "bea",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "Apuntado por Bea desde móvil/tablet",
+      "updatedAt": "2026-11-12T13:05:17.431Z",
+      "updatedBy": "Bea"
+    },
+    {
       "id": "quick_1794485077146",
       "concept": "Grupo TUERCA",
       "category": "Espectáculo y Ambientación",
@@ -1109,6 +1109,7 @@
       "updatedBy": "Leli"
     }
   ],
+  "documents": [],
   "deletedIds": [
     "quick_1794488535925"
   ]
