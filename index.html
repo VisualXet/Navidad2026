@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/styles.css?v=6" />
+  <link rel="stylesheet" href="css/styles.css?v=7" />
   <style>
     /* Garantizar lectura perfecta de fecha/días, botón incorporar y modo oscuro/claro sin depender de caché antigua */
     .topbar-left { flex-wrap: wrap !important; gap: 8px 12px !important; }
@@ -136,6 +136,11 @@
         <button class="nav-btn" data-view="budget" onclick="App.setView('budget')">
           <span>💶</span>
           <span>Presupuesto y Costes</span>
+        </button>
+        <button class="nav-btn" data-view="docs" onclick="App.setView('docs')">
+          <span>📂</span>
+          <span>Facturas y Archivo</span>
+          <span class="nav-badge" id="badge-docs">0</span>
         </button>
       </nav>
 
@@ -437,11 +442,34 @@
     </div>
   </div>
 
+  <!-- MODAL DE SUBIDA DE FACTURAS Y DOCUMENTOS DE CONSULTA -->
+  <div class="modal-backdrop" id="doc-upload-modal">
+    <div class="modal-box" style="max-width:680px;">
+      <div class="modal-header">
+        <h3 class="modal-title">📤 Subir Factura o Documento Histórico (Solo Consulta)</h3>
+        <button class="btn btn-secondary btn-sm" onclick="DocsModule.closeUploadModal()">✕</button>
+      </div>
+      <form onsubmit="DocsModule.saveUploadedDocument(event)">
+        <div class="modal-body" id="doc-upload-modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="DocsModule.closeUploadModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="doc-upload-submit-btn">💾 Archivar y Consultar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL VISUALIZADOR INTERACTIVO DE DOCUMENTOS (ZOOM, ROTACIÓN Y DESPLAZAMIENTO H/V + RESUMEN) -->
+  <div class="modal-backdrop" id="doc-viewer-modal">
+    <div class="doc-viewer-shell" id="doc-viewer-modal-content"></div>
+  </div>
+
   <!-- DOCUMENTO DINÁMICO EXCLUSIVO PARA IMPRESIÓN A4 (@media print) -->
   <section id="print-document" aria-hidden="true"></section>
 
-  <script src="js/web-bundle.js?v=6"></script>
-  <script src="js/app.js?v=6"></script>
+  <script src="js/web-bundle.js?v=7"></script>
+  <script src="js/docs-module.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
 </body>
 
 </html>
