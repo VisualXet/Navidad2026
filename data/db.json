@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 80,
-    "lastUpdated": "2026-11-13T12:27:48.320Z",
+    "version": 81,
+    "lastUpdated": "2026-11-13T12:28:27.803Z",
     "lastUpdatedBy": "Jose",
     "users": [
       {
@@ -50,6 +50,28 @@
     ]
   },
   "needs": [
+    {
+      "id": "quick_1794572907803",
+      "concept": "Barras de pan",
+      "category": "Alimentación y Bebidas",
+      "subcategory": "🍽️ Comida / Bebida",
+      "sector": "Cocina",
+      "qtyNeeded": 25,
+      "qtyConfirmed": 0,
+      "unit": "uds",
+      "originType": "Contratado",
+      "providerName": "Propuesto por Jose",
+      "providerContact": "",
+      "responsibleId": "jose",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "[Apuntado por Jose] El pan de Luis",
+      "updatedAt": "2026-11-13T12:28:27.803Z",
+      "updatedBy": "Jose"
+    },
     {
       "id": "quick_1794572868320",
       "concept": "Pates variados",
