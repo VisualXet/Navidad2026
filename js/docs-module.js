@@ -602,6 +602,20 @@ var DocsModule = {
       App.filters.sector !== 'ALL' ? App.filters.sector : App.getUserById(App.activeUserId).sector;
 
     body.innerHTML = `
+      ${
+        !App.ghToken
+          ? `
+        <div style="margin-bottom:12px;padding:10px 14px;border-radius:10px;background:#fef3c7;border:1.5px solid #f59e0b;color:#92400e;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div>
+            ⚠️ <strong>Falta el PIN en este dispositivo:</strong> Si guardas sin PIN, la factura solo se verá en tu ordenador hasta que actives el PIN.
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="DocsModule.closeUploadModal();App.openAuthModal();">
+            🔑 Poner PIN ahora
+          </button>
+        </div>
+      `
+          : ''
+      }
       <div class="doc-dropzone" onclick="document.getElementById('doc-file-input').click()"
         ondragover="event.preventDefault();this.classList.add('dragover');"
         ondragleave="this.classList.remove('dragover');"
@@ -840,7 +854,7 @@ var DocsModule = {
         referenceTotal: Number(document.getElementById('doc-up-total').value) || 0,
         summary: (document.getElementById('doc-up-summary').value || '').trim(),
         fileName: repoFileName,
-        repoPath: uploadedRemote || App.ghToken ? repoPath : '',
+        repoPath: uploadedRemote ? repoPath : '',
         mimeType: this.pendingUpload.mimeType,
         fileSize: blob.size,
         responsibleId: App.activeUserId,
@@ -862,6 +876,66 @@ var DocsModule = {
         saveBtn.innerHTML = prevText;
       }
     }
+  },
+
+  /**
+   * Si un compañero (ej. Leli) subió facturas cuando le faltaba poner el PIN (`!doc.repoPath`),
+   * en cuanto introduzca el PIN este método sube automáticamente todos sus PDFs/fotos guardados
+   * en IndexedDB a `docs/` en GitHub sin tener que volver a seleccionarlos uno por uno.
+   */
+  async syncPendingLocalBlobs() {
+    if (!App.ghToken || !App.db || !Array.isArray(App.db.documents)) return false;
+    if (this._isSyncingBlobs) return false;
+
+    const missingRemote = App.db.documents.filter((d) => d && !d.repoPath);
+    if (missingRemote.length === 0) return false;
+
+    this._isSyncingBlobs = true;
+    let uploadedCount = 0;
+
+    try {
+      for (let i = 0; i < missingRemote.length; i++) {
+        const doc = missingRemote[i];
+        const localBlob = await this.getBlobFromIdb(doc.id);
+        if (!localBlob) continue; // El archivo original está en el navegador del compañero que lo subió
+
+        const safeName =
+          doc.fileName || `${doc.id}_${this.sanitizeFileName(doc.title || 'documento.pdf')}`;
+        const repoPath = `docs/${safeName}`;
+
+        App.setSyncIndicator(
+          'syncing',
+          `Subiendo PDFs (${uploadedCount + 1}/${missingRemote.length})...`
+        );
+
+        const upRes = await this.uploadBinaryToGitHub(
+          repoPath,
+          localBlob,
+          `[${doc.uploadedBy || 'Equipo'}] Sincronizar documento pendiente: ${safeName}`
+        );
+
+        if (upRes && upRes.uploaded) {
+          doc.fileName = safeName;
+          doc.repoPath = repoPath;
+          doc.updatedAt = new Date().toISOString();
+          uploadedCount++;
+        }
+      }
+    } catch (err) {
+      console.warn('Error subiendo documentos locales pendientes:', err);
+    } finally {
+      this._isSyncingBlobs = false;
+    }
+
+    if (uploadedCount > 0) {
+      App.db.meta.lastUpdated = new Date().toISOString();
+      App.db.meta.version = (App.db.meta.version || 1) + 1;
+      App.hasPendingSync = true;
+      App.saveToLocalCache();
+      App.render();
+      return true;
+    }
+    return false;
   },
 
   async deleteDocument(docId) {
@@ -931,10 +1005,53 @@ var DocsModule = {
   renderDocsView(isEmbeddedMobile = false) {
     const docs = this.getFilteredDocuments();
     const allDocs = (App.db && App.db.documents) || [];
+    const unsyncedDocs = allDocs.filter((d) => d && !d.repoPath);
     const totalSizeBytes = allDocs.reduce((acc, d) => acc + (Number(d.fileSize) || 0), 0);
     const repoPct = Math.min(100, (totalSizeBytes / (1024 * 1024 * 1024)) * 100);
 
     return `
+      ${
+        !App.ghToken
+          ? `
+        <div class="panel-card" style="margin-bottom:14px;padding:14px 18px;background:#fffbeb;border:2px solid #f59e0b;color:#78350f;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="font-weight:900;font-size:14.5px;color:#92400e;">
+                ${
+                  unsyncedDocs.length > 0
+                    ? `⚠️ Tienes ${unsyncedDocs.length} documento(s) guardados SOLO en este ordenador (Falta el PIN)`
+                    : '🔑 Falta activar el PIN del equipo en este dispositivo'
+                }
+              </div>
+              <div style="font-size:12.5px;color:#78350f;margin-top:2px;">
+                ${
+                  unsyncedDocs.length > 0
+                    ? 'Los demás compañeros ven 0 documentos hasta que introduzcas el PIN. Al ponerlo se subirán solos sin volver a cargarlos.'
+                    : 'Introduce el PIN una sola vez para que las facturas que subas se compartan automáticamente con todo el equipo.'
+                }
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="App.openAuthModal()">
+              🔑 Introducir PIN y Sincronizar Ahora
+            </button>
+          </div>
+        </div>
+      `
+          : unsyncedDocs.length > 0
+          ? `
+        <div class="panel-card" style="margin-bottom:14px;padding:12px 16px;background:#eff6ff;border:1.5px solid #60a5fa;color:#1e3a8a;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div style="font-size:12.5px;font-weight:700;">
+              ☁️ Hay <strong>${unsyncedDocs.length}</strong> factura(s) con el PDF pendiente de subir desde el ordenador donde se cargaron. Si las subiste tú en este PC, pulsa sincronizar:
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="App.syncNow(true)">
+              ☁️ Subir PDFs Pendientes Ahora
+            </button>
+          </div>
+        </div>
+      `
+          : ''
+      }
       <!-- Banner Informativo y Buscador Rápido (Especialmente útil en Móvil / Tablet) -->
       <div class="panel-card" style="margin-bottom:16px;padding:14px 18px;border-left:5px solid #2563eb;">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
@@ -991,11 +1108,24 @@ var DocsModule = {
             ${allDocs.length === 0 ? 'Todavía no hay facturas ni documentos archivados' : 'Ningún documento coincide con los filtros actuales'}
           </div>
           <div style="font-size:13px;color:var(--text-muted);max-width:520px;margin:6px auto 16px;">
-            Sube facturas en PDF o fotos de años anteriores para consultar precios unitarios, cantidades pedidas y datos de proveedores, con resumen automático y visor con zoom, giro y desplazamiento.
+            ${
+              allDocs.length === 0
+                ? 'Sube facturas en PDF o fotos de años anteriores para consultar precios unitarios, cantidades pedidas y datos de proveedores, con resumen automático y visor con zoom, giro y desplazamiento.'
+                : `Hay <strong>${allDocs.length} documentos</strong> guardados en el archivo, pero tienes un filtro activo arriba (Sector, Responsable o Año) que los está ocultando.`
+            }
           </div>
-          <button class="btn btn-primary" onclick="DocsModule.openUploadModal()">
-            📤 Subir Primera Factura o Documento
-          </button>
+          <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+            ${
+              allDocs.length > 0
+                ? `<button type="button" class="btn btn-dark" onclick="App.resetFilters();DocsModule.docFilters={year:'ALL',docType:'ALL'};App.render();">
+                🔄 Ver los ${allDocs.length} documentos (Quitar filtros)
+              </button>`
+                : ''
+            }
+            <button class="btn btn-primary" onclick="DocsModule.openUploadModal()">
+              📤 ${allDocs.length === 0 ? 'Subir Primera Factura o Documento' : 'Subir Factura / Foto'}
+            </button>
+          </div>
         </div>
       `
           : `
@@ -1016,6 +1146,11 @@ var DocsModule = {
                       ${isPdf ? '📕 PDF' : '🖼️ Imagen'} · ${App.escapeHtml(doc.docType || 'Factura')}
                     </span>
                     ${App.renderSectorBadge(doc.sector || 'Organización')}
+                    ${
+                      !doc.repoPath
+                        ? `<span class="badge" style="background:#fef3c7;color:#92400e;border:1px solid #f59e0b;" title="Falta sincronizar con PIN desde el dispositivo de ${App.escapeHtml(doc.uploadedBy || 'quien lo subió')}">⏳ Solo local (${App.escapeHtml(doc.uploadedBy || 'Falta PIN')})</span>`
+                        : ''
+                    }
                   </div>
                   <span style="font-size:11px;color:var(--text-light);white-space:nowrap;">
                     ${this.formatBytes(doc.fileSize || 0)}
