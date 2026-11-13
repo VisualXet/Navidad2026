@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 60,
-    "lastUpdated": "2026-11-13T12:19:29.498Z",
+    "version": 61,
+    "lastUpdated": "2026-11-13T12:20:09.299Z",
     "lastUpdatedBy": "Jose",
     "users": [
       {
@@ -50,6 +50,28 @@
     ]
   },
   "needs": [
+    {
+      "id": "quick_1794572409299",
+      "concept": "Queso cabra curado",
+      "category": "Alimentación y Bebidas",
+      "subcategory": "🍽️ Comida / Bebida",
+      "sector": "Cocina",
+      "qtyNeeded": 2,
+      "qtyConfirmed": 0,
+      "unit": "uds",
+      "originType": "Contratado",
+      "providerName": "Propuesto por Jose",
+      "providerContact": "",
+      "responsibleId": "jose",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "[Apuntado por Jose] LAS 3RRR",
+      "updatedAt": "2026-11-13T12:20:09.299Z",
+      "updatedBy": "Jose"
+    },
     {
       "id": "quick_1794572369498",
       "concept": "Queso de vaca",
