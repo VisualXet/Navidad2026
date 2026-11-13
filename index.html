@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/styles.css?v=7" />
+  <link rel="stylesheet" href="css/styles.css?v=8" />
   <style>
     /* Garantizar lectura perfecta de fecha/días, botón incorporar y modo oscuro/claro sin depender de caché antigua */
     .topbar-left { flex-wrap: wrap !important; gap: 8px 12px !important; }
@@ -341,6 +341,10 @@
         <span class="bottom-nav-icon">⏱️</span>
         <span>Horarios</span>
       </button>
+      <button class="bottom-nav-btn" data-view="docs" onclick="App.setView('docs')">
+        <span class="bottom-nav-icon">📂</span>
+        <span>Facturas</span>
+      </button>
     </nav>
   </div>
 
@@ -467,9 +471,9 @@
   <!-- DOCUMENTO DINÁMICO EXCLUSIVO PARA IMPRESIÓN A4 (@media print) -->
   <section id="print-document" aria-hidden="true"></section>
 
-  <script src="js/web-bundle.js?v=7"></script>
-  <script src="js/docs-module.js?v=7"></script>
-  <script src="js/app.js?v=7"></script>
+  <script src="js/web-bundle.js?v=8"></script>
+  <script src="js/docs-module.js?v=8"></script>
+  <script src="js/app.js?v=8"></script>
 </body>
 
 </html>
