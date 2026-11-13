@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 78,
-    "lastUpdated": "2026-11-13T12:27:11.667Z",
+    "version": 79,
+    "lastUpdated": "2026-11-13T12:27:21.764Z",
     "lastUpdatedBy": "Jose",
     "users": [
       {
@@ -158,28 +158,6 @@
       "paymentStatus": "Pendiente",
       "notes": "Apuntado por Jose desde móvil/tablet",
       "updatedAt": "2026-11-13T12:24:51.823Z",
-      "updatedBy": "Jose"
-    },
-    {
-      "id": "quick_1794572679379",
-      "concept": "Gildas varias",
-      "category": "Alimentación y Bebidas",
-      "subcategory": "🍽️ Comida / Bebida",
-      "sector": "Cocina",
-      "qtyNeeded": 1,
-      "qtyConfirmed": 0,
-      "unit": "uds",
-      "originType": "Contratado",
-      "providerName": "Propuesto por Jose",
-      "providerContact": "",
-      "responsibleId": "jose",
-      "status": "Pendiente",
-      "budgetEstimated": 0,
-      "budgetReal": 0,
-      "amountPaid": 0,
-      "paymentStatus": "Pendiente",
-      "notes": "Apuntado por Jose desde móvil/tablet",
-      "updatedAt": "2026-11-13T12:24:39.379Z",
       "updatedBy": "Jose"
     },
     {
@@ -1774,6 +1752,7 @@
   ],
   "deletedIds": [
     "quick_1794488535925",
-    "quick_1794572432422"
+    "quick_1794572432422",
+    "quick_1794572679379"
   ]
 }
