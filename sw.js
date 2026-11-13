@@ -1,9 +1,10 @@
-const CACHE_NAME = 'navidad2026-pwa-v6';
+const CACHE_NAME = 'navidad2026-pwa-v7';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './movil.html',
   './css/styles.css',
+  './js/docs-module.js',
   './js/app.js',
   './manifest.json',
   './img/icon.svg',
@@ -36,8 +37,8 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Nunca cachear llamadas a la API de GitHub ni lecturas directas de db.json con cache-Control
-  if (url.hostname === 'api.github.com' || url.pathname.endsWith('/data/db.json')) {
+  // Nunca cachear llamadas a la API de GitHub ni lecturas directas de db.json o binarios de /docs/ con fallback HTML
+  if (url.hostname === 'api.github.com' || url.pathname.endsWith('/data/db.json') || url.pathname.includes('/docs/')) {
     event.respondWith(
       fetch(req).catch(() => caches.match(req))
     );
