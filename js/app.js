@@ -697,6 +697,7 @@ const App = {
     ).sort((a, b) => (a.timeStart || '').localeCompare(b.timeStart || ''));
 
     const mergedBudgetExtra = mergeArrayById(localDb.budgetExtra, remoteDb.budgetExtra);
+    const mergedDocuments = mergeArrayById(localDb.documents, remoteDb.documents);
 
     const localMetaTime = Date.parse((localDb.meta && localDb.meta.lastUpdated) || '2000-01-01') || 0;
     const remoteMetaTime = Date.parse((remoteDb.meta && remoteDb.meta.lastUpdated) || '2000-01-01') || 0;
@@ -710,6 +711,7 @@ const App = {
         eventDay: mergedEventDay
       },
       budgetExtra: mergedBudgetExtra,
+      documents: mergedDocuments,
       deletedIds: Array.from(deletedSet).slice(-300)
     };
   },
@@ -925,7 +927,7 @@ const App = {
 
       if (paths.length === 0) {
         // Intentar leer por fetch si estamos en un servidor local http://
-        const candidatePaths = ['css/styles.css', 'js/app.js', 'sw.js', 'README.md', 'movil.html', 'index.html'];
+        const candidatePaths = ['css/styles.css', 'js/docs-module.js', 'js/app.js', 'sw.js', 'README.md', 'movil.html', 'index.html'];
         for (const p of candidatePaths) {
           const r = await fetch(`./${p}?t=${Date.now()}`, { cache: 'no-store' });
           if (r.ok) {
@@ -935,7 +937,7 @@ const App = {
       }
 
       // Subir primero CSS, JS y SW, y por último movil.html e index.html para que GitHub Pages compile con todo listo
-      const priorityOrder = ['css/styles.css', 'js/app.js', 'sw.js', 'README.md', 'movil.html', 'index.html'];
+      const priorityOrder = ['css/styles.css', 'js/docs-module.js', 'js/app.js', 'sw.js', 'README.md', 'movil.html', 'index.html'];
       const finalPaths = priorityOrder.filter((p) => filesMap[p] !== undefined);
       if (finalPaths.length === 0) {
         throw new Error('No se encontraron archivos locales para publicar.');
@@ -1018,7 +1020,8 @@ const App = {
       needs: 'Necesidades, Logística y Proveedores',
       tasks: 'Asignación y Seguimiento de Tareas',
       schedule: 'Planificación Temporal (Pre-Evento y 18 Diciembre)',
-      budget: 'Control de Presupuesto y Costes'
+      budget: 'Control de Presupuesto y Costes',
+      docs: '📂 Facturas y Documentos de Consulta'
     };
     const titleEl = document.getElementById('current-view-title');
     if (titleEl) titleEl.textContent = titles[viewName] || 'Navidad 2026';
@@ -1031,7 +1034,8 @@ const App = {
         needs: '➕ Nueva Necesidad',
         tasks: '➕ Nueva Tarea',
         schedule: '➕ Nuevo Hito Horario',
-        budget: '➕ Partida Extra'
+        budget: '➕ Partida Extra',
+        docs: '📤 Subir Documento'
       };
       addBtn.textContent = btnLabels[viewName] || '➕ Nuevo';
     }
@@ -1249,8 +1253,10 @@ const App = {
     const bNeeds = document.getElementById('badge-needs');
     const bTasks = document.getElementById('badge-tasks');
     const bSched = document.getElementById('badge-schedule');
+    const bDocs = document.getElementById('badge-docs');
 
     if (bNeeds) bNeeds.textContent = (this.db.needs || []).length;
+    if (bDocs) bDocs.textContent = (this.db.documents || []).length;
     if (bTasks) {
       const openTasks = (this.db.tasks || []).filter((t) => t.status !== 'Completada').length;
       bTasks.textContent = openTasks;
@@ -1285,6 +1291,9 @@ const App = {
         break;
       case 'budget':
         container.innerHTML = this.renderBudgetView();
+        break;
+      case 'docs':
+        container.innerHTML = window.DocsModule ? DocsModule.renderDocsView() : '';
         break;
       default:
         container.innerHTML = this.renderQuickMobileView();
@@ -1341,6 +1350,8 @@ const App = {
           <option value="Pagado" ${this.filters.paymentStatus === 'Pagado' ? 'selected' : ''}>✅ Pagado 100%</option>
         </select>
       `;
+    } else if (this.currentView === 'docs' && window.DocsModule) {
+      box.innerHTML = DocsModule.renderSubfiltersHtml();
     } else {
       box.innerHTML = `
         <span style="font-size:12px;color:var(--text-light);">
@@ -2609,6 +2620,8 @@ const App = {
       this.openCrudModal(type, null);
     } else if (this.currentView === 'budget') {
       this.openCrudModal('budgetExtra', null);
+    } else if (this.currentView === 'docs' && window.DocsModule) {
+      DocsModule.openUploadModal();
     } else {
       this.openCrudModal('need', null);
     }
