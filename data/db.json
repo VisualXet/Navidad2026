@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 57,
-    "lastUpdated": "2026-11-13T12:18:32.086Z",
+    "version": 58,
+    "lastUpdated": "2026-11-13T12:18:47.780Z",
     "lastUpdatedBy": "Jose",
     "users": [
       {
@@ -50,6 +50,28 @@
     ]
   },
   "needs": [
+    {
+      "id": "quick_1794572327780",
+      "concept": "Chorizo ibérico",
+      "category": "Alimentación y Bebidas",
+      "subcategory": "🍽️ Comida / Bebida",
+      "sector": "Cocina",
+      "qtyNeeded": 3,
+      "qtyConfirmed": 0,
+      "unit": "uds",
+      "originType": "Contratado",
+      "providerName": "Propuesto por Jose",
+      "providerContact": "",
+      "responsibleId": "jose",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "Apuntado por Jose desde móvil/tablet",
+      "updatedAt": "2026-11-13T12:18:47.780Z",
+      "updatedBy": "Jose"
+    },
     {
       "id": "quick_1794572312086",
       "concept": "Caña de lomo ibérico",
