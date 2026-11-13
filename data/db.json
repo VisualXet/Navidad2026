@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 65,
-    "lastUpdated": "2026-11-13T12:22:41.765Z",
+    "version": 66,
+    "lastUpdated": "2026-11-13T12:23:04.047Z",
     "lastUpdatedBy": "Jose",
     "users": [
       {
@@ -50,6 +50,28 @@
     ]
   },
   "needs": [
+    {
+      "id": "quick_1794572584047",
+      "concept": "Pan de gambas",
+      "category": "Alimentación y Bebidas",
+      "subcategory": "🍽️ Comida / Bebida",
+      "sector": "Cocina",
+      "qtyNeeded": 6,
+      "qtyConfirmed": 0,
+      "unit": "uds",
+      "originType": "Contratado",
+      "providerName": "Propuesto por Jose",
+      "providerContact": "",
+      "responsibleId": "jose",
+      "status": "Pendiente",
+      "budgetEstimated": 0,
+      "budgetReal": 0,
+      "amountPaid": 0,
+      "paymentStatus": "Pendiente",
+      "notes": "Apuntado por Jose desde móvil/tablet",
+      "updatedAt": "2026-11-13T12:23:04.047Z",
+      "updatedBy": "Jose"
+    },
     {
       "id": "quick_1794572561765",
       "concept": "Patatas chips",
