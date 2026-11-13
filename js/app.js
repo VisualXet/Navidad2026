@@ -2635,8 +2635,10 @@ const App = {
       this.openCrudModal(type, null);
     } else if (this.currentView === 'budget') {
       this.openCrudModal('budgetExtra', null);
-    } else if (this.currentView === 'docs' && window.DocsModule) {
-      DocsModule.openUploadModal();
+    } else if (this.currentView === 'docs') {
+      if (window.DocsModule) {
+        DocsModule.openUploadModal();
+      }
     } else {
       this.openCrudModal('need', null);
     }
@@ -2673,6 +2675,7 @@ const App = {
   openCrudModal(type, id = null) {
     this.editingContext = { type, id };
     const modal = document.getElementById('crud-modal');
+    if (!modal) return;
     const titleEl = document.getElementById('crud-modal-title');
     const bodyEl = document.getElementById('crud-modal-body');
     const delBtn = document.getElementById('crud-delete-btn');
@@ -3695,6 +3698,12 @@ const App = {
     }
   }
 };
+
+if (typeof window !== 'undefined') {
+  window.App = App;
+  window.GITHUB_CONFIG = GITHUB_CONFIG;
+  window.SECTORS = SECTORS;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   App.init();
