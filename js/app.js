@@ -1651,7 +1651,7 @@ const App = {
           </div>
         </div>
 
-        <!-- DIVISIÓN EN DOS PARTES GRANDES Y CÓMODAS -->
+        <!-- DIVISIÓN EN TRES SECCIONES GRANDES Y CÓMODAS EN MÓVIL / TABLET -->
         <div class="quick-two-tabs">
           <button type="button"
             class="quick-big-tab ${this.quickTab === 'aportar' ? 'active' : ''}"
@@ -1670,6 +1670,16 @@ const App = {
             <div>
               <div style="font-weight:900;font-size:15px;">2. Stock / Material (${stockItems.length})</div>
               <div style="font-size:11.5px;opacity:0.85;">Inventario packaging año pasado</div>
+            </div>
+          </button>
+
+          <button type="button"
+            class="quick-big-tab ${this.quickTab === 'docs' ? 'active' : ''}"
+            onclick="App.setQuickTab('docs')">
+            <span style="font-size:22px;">📂</span>
+            <div>
+              <div style="font-weight:900;font-size:15px;">3. Facturas y Documentos (${(this.db.documents || []).length})</div>
+              <div style="font-size:11.5px;opacity:0.85;">Subir fotos/PDFs, ver resumen y precios</div>
             </div>
           </button>
         </div>
@@ -1802,7 +1812,8 @@ const App = {
             </div>
           </div>
         `
-            : `
+            : this.quickTab === 'stock'
+            ? `
           <!-- PARTE 2: INVENTARIO Y STOCK DISPONIBLE (MATERIAL DEL AÑO PASADO E INSTALACIONES) -->
           <div class="panel-card quick-stock-add-box" style="padding:18px;">
             <div class="quick-stock-add-title" style="font-weight:900;font-size:15.5px;margin-bottom:8px;">
@@ -1851,6 +1862,10 @@ const App = {
               ${this.renderQuickStockItemsHtml()}
             </div>
           </div>
+        `
+            : `
+          <!-- PARTE 3: ARCHIVO DE FACTURAS Y DOCUMENTOS EN MÓVIL / TABLET -->
+          ${window.DocsModule ? DocsModule.renderDocsView(true) : ''}
         `
         }
       </div>
