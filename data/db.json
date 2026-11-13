@@ -5,8 +5,8 @@
     "eventDate": "2026-12-18",
     "location": "Instalaciones Centrales de la Empresa",
     "estimatedGuests": 85,
-    "version": 62,
-    "lastUpdated": "2026-11-13T12:20:32.422Z",
+    "version": 63,
+    "lastUpdated": "2026-11-13T12:21:02.407Z",
     "lastUpdatedBy": "Jose",
     "users": [
       {
@@ -50,28 +50,6 @@
     ]
   },
   "needs": [
-    {
-      "id": "quick_1794572432422",
-      "concept": "Queso cabra semi",
-      "category": "Espectáculo y Ambientación",
-      "subcategory": "🎄 Decoración",
-      "sector": "Organización",
-      "qtyNeeded": 2,
-      "qtyConfirmed": 0,
-      "unit": "ud",
-      "originType": "Contratado",
-      "providerName": "Propuesto por Jose",
-      "providerContact": "",
-      "responsibleId": "jose",
-      "status": "Pendiente",
-      "budgetEstimated": 0,
-      "budgetReal": 0,
-      "amountPaid": 0,
-      "paymentStatus": "Pendiente",
-      "notes": "[Apuntado por Jose] Las 3RRR",
-      "updatedAt": "2026-11-13T12:20:32.422Z",
-      "updatedBy": "Jose"
-    },
     {
       "id": "quick_1794572409299",
       "concept": "Queso cabra curado",
@@ -1465,6 +1443,7 @@
     }
   ],
   "deletedIds": [
-    "quick_1794488535925"
+    "quick_1794488535925",
+    "quick_1794572432422"
   ]
 }
